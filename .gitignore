@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.cache/
+.sandbox/
+*.local
+*.tsbuildinfo
+.env*
+!.env.example
+
+# Anonymous learner progress stays in the browser and is never committed.
+progress/
