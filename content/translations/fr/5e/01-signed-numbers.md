@@ -41,8 +41,8 @@ exercises:
       - Vérifier que $-4{,}5+7{,}2-7{,}6+1{,}8=-3{,}1$.
   - id: 5e-signed-t3
     tierTitle: Synthèse du programme officiel
-    prompt: Ranger d'abord les quatre cartes $-4{,}5,-1{,}2,2{,}3,3{,}4$ dans l'ordre croissant. Les ordonner ensuite de sorte que, en partant de $0$, chaque somme cumulée soit positive ou nulle. Donner un ordre possible et indiquer les quatre sommes cumulées.
-    solution: L'ordre croissant est $-4{,}5<-1{,}2<2{,}3<3{,}4$. Un ordre valable est $3{,}4,-1{,}2,2{,}3,-4{,}5$. Les sommes cumulées sont $3{,}4,2{,}2,4{,}5,0$ ; elles sont toutes positives ou nulles.
+    prompt: Ranger d'abord les quatre cartes $-4{,}5 ; -1{,}2 ; 2{,}3 ; 3{,}4$ dans l'ordre croissant. Les ordonner ensuite de sorte que, en partant de $0$, chaque somme cumulée soit positive ou nulle. Donner un ordre possible et indiquer les quatre sommes cumulées.
+    solution: L'ordre croissant est $-4{,}5<-1{,}2<2{,}3<3{,}4$. Un ordre valable est $3{,}4 ; -1{,}2 ; 2{,}3 ; -4{,}5$. Les sommes cumulées sont $3{,}4 ; 2{,}2 ; 4{,}5 ; 0$ ; elles sont toutes positives ou nulles.
     hints:
       - Une carte négative ne peut pas être placée en premier.
       - Avant de jouer $-4{,}5$, obtenir une somme cumulée d'au moins $4{,}5$.

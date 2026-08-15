@@ -59,6 +59,13 @@ const expectedLessonIds: Record<Level, string[]> = {
   ],
 };
 
+function findAmbiguousFrenchNumberLists(content: string) {
+  const numberList = /[+−-]?\d+(?:\{,\}\d+)?(?:\s*,\s*[+−-]?\d+(?:\{,\}\d+)?)+/g;
+  return [...content.matchAll(numberList)]
+    .map(([match]) => match)
+    .filter((match) => match.includes("{,}"));
+}
+
 describe("lesson content", () => {
   it("loads the complete curriculum in order for every level", () => {
     for (const [level, expectedIds] of Object.entries(expectedLessonIds)) {
@@ -108,6 +115,16 @@ describe("lesson content", () => {
   it("uses American English spelling in English content", () => {
     const englishContent = JSON.stringify(lessonsByLocale.en);
     expect(englishContent).not.toMatch(/\b(?:analyse|analysed|behaviour|centre|centred|colour|colouring|factorise|factorised|modelling|recognise|recognised)\b/i);
+  });
+
+  it("uses semicolons between French list items when a value has a decimal comma", () => {
+    expect(findAmbiguousFrenchNumberLists("$4{,}5,-1{,}2,2{,}3$")).toHaveLength(1);
+    expect(findAmbiguousFrenchNumberLists("$4{,}5 ; -1{,}2 ; 2{,}3$")).toEqual([]);
+
+    const issues = lessonsByLocale.fr.flatMap((lesson) =>
+      findAmbiguousFrenchNumberLists(JSON.stringify(lesson)).map((match) => `${lesson.meta.id}: ${match}`)
+    );
+    expect(issues).toEqual([]);
   });
 
   it("reports the path of malformed YAML front matter", () => {
