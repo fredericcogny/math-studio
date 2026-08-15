@@ -1,4 +1,4 @@
-# Maths Studio workspace rules
+# Math Studio workspace rules
 
 - Work only with files inside this repository. Never request or access files elsewhere.
 - Never read global Git, SSH, cloud, browser, or editor credentials.

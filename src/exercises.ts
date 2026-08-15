@@ -1,4 +1,6 @@
 import type { Exercise, GeneratorSpec } from "./types";
+export { parseNumericAnswer } from "./assessment";
+import { parseNumericAnswer } from "./assessment";
 
 function random(seed: number) {
   let state = seed >>> 0;
@@ -26,6 +28,14 @@ export function generateExercises(spec: GeneratorSpec): Exercise[] {
 
   return Array.from({ length: spec.count }, (_, index) => {
     const id = `${spec.type}-${spec.seed}-${index}`;
+    // Assign tiers 1 to 4 sequentially or based on index
+    const tierLevel = ((index % 4) + 1) as 1 | 2 | 3 | 4;
+    const tierTitles: Record<1 | 2 | 3 | 4, string> = {
+      1: "Direct Application",
+      2: "Standard Exam Practice",
+      3: "Synthesis and Inequalities",
+      4: "Preparatory Challenge",
+    };
 
     if (spec.type === "signed-arithmetic") {
       const left = integer(next, spec.min, spec.max);
@@ -33,11 +43,15 @@ export function generateExercises(spec: GeneratorSpec): Exercise[] {
       const addition = next() >= 0.5;
       return {
         id,
+        tier: tierLevel,
+        tierTitle: tierTitles[tierLevel],
+        curriculumStatus: tierLevel <= 2 ? "core" as const : tierLevel === 3 ? "stretch" as const : "olympiad" as const,
         prompt: `${left} ${addition ? "+" : "−"} (${right})`,
-        answer: addition ? left + right : left - right,
+        assessment: { kind: "numeric" as const, expected: addition ? left + right : left - right },
         solution: addition
           ? `${left} + (${right}) = ${left + right}`
           : `${left} − (${right}) = ${left - right}`,
+        hints: ["Track the operation sign separately from the number's sign."],
       };
     }
 
@@ -48,9 +62,13 @@ export function generateExercises(spec: GeneratorSpec): Exercise[] {
       const result = a * x + b;
       return {
         id,
+        tier: tierLevel,
+        tierTitle: tierTitles[tierLevel],
+        curriculumStatus: tierLevel <= 2 ? "core" as const : tierLevel === 3 ? "stretch" as const : "olympiad" as const,
         prompt: `Solve for x: ${a}x ${b < 0 ? "−" : "+"} ${Math.abs(b)} = ${result}`,
-        answer: x,
+        assessment: { kind: "numeric" as const, expected: x },
         solution: `${a}x = ${result - b}, so x = ${x}.`,
+        hints: ["Undo the constant term before dividing by the coefficient of x."],
       };
     }
 
@@ -61,9 +79,13 @@ export function generateExercises(spec: GeneratorSpec): Exercise[] {
       const dividend = divisor * quotient + remainder;
       return {
         id,
+        tier: tierLevel,
+        tierTitle: tierTitles[tierLevel],
+        curriculumStatus: tierLevel <= 2 ? "core" as const : tierLevel === 3 ? "stretch" as const : "olympiad" as const,
         prompt: `What is the remainder when ${dividend} is divided by ${divisor}?`,
-        answer: remainder,
+        assessment: { kind: "numeric" as const, expected: remainder },
         solution: `${dividend} = ${divisor} × ${quotient} + ${remainder}.`,
+        hints: ["Write the dividend as divisor times quotient plus a smaller remainder."],
       };
     }
 
@@ -74,24 +96,15 @@ export function generateExercises(spec: GeneratorSpec): Exercise[] {
     const answer = a * x * x + b * x + c;
     return {
       id,
+      tier: tierLevel,
+      tierTitle: tierTitles[tierLevel],
+      curriculumStatus: tierLevel <= 2 ? "core" as const : tierLevel === 3 ? "stretch" as const : "olympiad" as const,
       prompt: `For f(x) = ${a}x² ${b < 0 ? "−" : "+"} ${Math.abs(b)}x ${c < 0 ? "−" : "+"} ${Math.abs(c)}, find f(${x}).`,
-      answer,
+      assessment: { kind: "numeric" as const, expected: answer },
       solution: `f(${x}) = ${a} × (${x})² + ${b} × (${x}) + ${c} = ${answer}.`,
+      hints: ["Substitute the given x-value into every occurrence of x before simplifying."],
     };
   });
-}
-
-export function parseNumericAnswer(raw: string): number | null {
-  const normalized = raw.trim().replace(",", ".");
-  const fraction = normalized.match(/^(-?\d+)\s*\/\s*(-?\d+)$/);
-  if (fraction) {
-    const denominator = Number(fraction[2]);
-    return denominator === 0 ? null : Number(fraction[1]) / denominator;
-  }
-
-  if (!/^-?(?:\d+\.?\d*|\.\d+)$/.test(normalized)) return null;
-  const value = Number(normalized);
-  return Number.isFinite(value) ? value : null;
 }
 
 export function isCorrect(raw: string, expected: number) {

@@ -1,5 +1,36 @@
-export type Level = "5e" | "3e" | "1re";
+export type Level = "5e" | "3e" | "1re" | "TAL-spe" | "TAL-exp";
+export type Locale = "en" | "fr";
 export type Difficulty = "revision" | "core" | "stretch" | "olympiad";
+
+export type ExerciseTierLevel = 1 | 2 | 3 | 4;
+export type CurriculumStatus = "core" | "stretch" | "olympiad" | "cpge";
+
+export type ExerciseAssessment =
+  | {
+      kind: "numeric";
+      expected: number;
+      tolerance?: number;
+    }
+  | {
+      kind: "exact";
+      expected: string;
+      accepted?: string[];
+    }
+  | {
+      kind: "reasoning";
+      rubric: string[];
+    };
+
+export interface TieredExercise {
+  id: string;
+  tier: ExerciseTierLevel;
+  tierTitle: string;
+  curriculumStatus: CurriculumStatus;
+  prompt: string;
+  solution: string;
+  hints: string[];
+  assessment: ExerciseAssessment;
+}
 
 export type GeneratorSpec =
   | {
@@ -64,6 +95,7 @@ export interface LessonMeta {
   vocabulary: VocabularyEntry[];
   flashcards: Flashcard[];
   generator: GeneratorSpec;
+  tieredExercises?: TieredExercise[];
 }
 
 export interface Lesson {
@@ -74,6 +106,10 @@ export interface Lesson {
 export interface Exercise {
   id: string;
   prompt: string;
-  answer: number;
   solution: string;
+  tier: ExerciseTierLevel;
+  tierTitle: string;
+  curriculumStatus: CurriculumStatus;
+  hints: string[];
+  assessment: ExerciseAssessment;
 }

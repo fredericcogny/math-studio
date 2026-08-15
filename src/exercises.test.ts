@@ -28,7 +28,9 @@ describe("deterministic exercise generation", () => {
     });
 
     expect(exercises).toHaveLength(8);
-    expect(exercises.every((exercise) => Number.isInteger(exercise.answer))).toBe(true);
+    expect(exercises.every((exercise) =>
+      exercise.assessment.kind === "numeric" && Number.isInteger(exercise.assessment.expected)
+    )).toBe(true);
   });
 });
 

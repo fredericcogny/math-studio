@@ -26,7 +26,21 @@ export function loadProgress(): ProgressState {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) return emptyProgress;
     const value = JSON.parse(stored) as ProgressState;
-    return value.version === 1 ? value : emptyProgress;
+    const levels: Level[] = ["5e", "3e", "1re", "TAL-spe", "TAL-exp"];
+    if (value?.version !== 1 || !levels.includes(value.selectedProfile) || !value.lessons || typeof value.lessons !== "object") {
+      return emptyProgress;
+    }
+    for (const records of Object.values(value.lessons)) {
+      if (!records || typeof records !== "object") return emptyProgress;
+      for (const record of Object.values(records)) {
+        if (!record || !Number.isInteger(record.attempts) || record.attempts < 0
+          || !Number.isFinite(record.bestScore) || record.bestScore < 0 || record.bestScore > 100
+          || typeof record.completed !== "boolean" || !Number.isFinite(Date.parse(record.lastPractisedAt))) {
+          return emptyProgress;
+        }
+      }
+    }
+    return value;
   } catch {
     return emptyProgress;
   }

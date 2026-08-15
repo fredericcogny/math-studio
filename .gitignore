@@ -9,3 +9,7 @@ dist/
 
 # Anonymous learner progress stays in the browser and is never committed.
 progress/
+
+# Playwright output; visual baselines under e2e/ remain versioned.
+playwright-report/
+test-results/

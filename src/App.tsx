@@ -1,64 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
-import { lessons } from "./content";
-import { generateExercises, isCorrect } from "./exercises";
+import { lessonsByLocale } from "./content";
+import { profilesByLocale, ui } from "./i18n";
 import {
   loadProgress,
   recordAttempt,
   saveProgress,
   type ProgressState,
 } from "./progress";
-import type { Difficulty, Lesson, Level } from "./types";
+import { Practice } from "./Practice";
+import type { Lesson, Level, Locale } from "./types";
 
-const profiles: Array<{
-  level: Level;
-  label: string;
-  stage: string;
-  direction: string;
-}> = [
-  {
-    level: "5e",
-    label: "Explorer 5e",
-    stage: "Entering 5e · age 12",
-    direction: "Strong foundations, patterns, first proofs",
-  },
-  {
-    level: "3e",
-    label: "Explorer 3e",
-    stage: "Entering 3e · age 14",
-    direction: "Brevet fluency, algebra, mathematical reasoning",
-  },
-  {
-    level: "1re",
-    label: "Explorer 1re",
-    stage: "Entering 1re · age 16",
-    direction: "Maths · Physics-Chemistry · Engineering Science · CPGE runway",
-  },
-];
+const LANGUAGE_KEY = "maths-studio.language";
 
-const difficultyLabel: Record<Difficulty, string> = {
-  revision: "Quick revision",
-  core: "Programme core",
-  stretch: "Stretch",
-  olympiad: "Olympiad lens",
-};
+function loadLocale(): Locale {
+  try {
+    return localStorage.getItem(LANGUAGE_KEY) === "fr" ? "fr" : "en";
+  } catch {
+    return "en";
+  }
+}
 
 function LessonList({
   availableLessons,
   current,
   progress,
   onSelect,
+  locale,
 }: {
   availableLessons: Lesson[];
   current: string;
   progress: ProgressState;
   onSelect: (lesson: Lesson) => void;
+  locale: Locale;
 }) {
+  const t = ui[locale];
   return (
-    <nav className="lesson-list" aria-label="Lessons">
-      <p className="eyebrow">Route map</p>
+    <nav className="lesson-list" aria-label={t.lessons}>
+      <p className="eyebrow">{t.curriculum} · {availableLessons.length} {t.lessonCount}</p>
       {availableLessons.map((lesson, index) => {
         const state = progress.lessons[lesson.meta.level]?.[lesson.meta.id];
         return (
@@ -66,11 +47,12 @@ function LessonList({
             className={`lesson-link ${current === lesson.meta.id ? "active" : ""}`}
             key={lesson.meta.id}
             onClick={() => onSelect(lesson)}
+            aria-current={current === lesson.meta.id ? "page" : undefined}
           >
             <span className="lesson-index">{String(index + 1).padStart(2, "0")}</span>
             <span>
               <strong>{lesson.meta.title}</strong>
-              <small>{difficultyLabel[lesson.meta.difficulty]}</small>
+              <small>{t.difficulty[lesson.meta.difficulty]}</small>
             </span>
             <span className={state?.completed ? "status complete" : "status"}>
               {state?.completed ? "✓" : "·"}
@@ -82,10 +64,11 @@ function LessonList({
   );
 }
 
-function Flashcards({ cards }: { cards: Lesson["meta"]["flashcards"] }) {
+function Flashcards({ cards, locale }: { cards: Lesson["meta"]["flashcards"]; locale: Locale }) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const card = cards[index];
+  const t = ui[locale];
 
   if (!card) return null;
 
@@ -98,73 +81,29 @@ function Flashcards({ cards }: { cards: Lesson["meta"]["flashcards"] }) {
     <section className="study-block flashcard-block">
       <div className="section-heading">
         <div>
-          <p className="eyebrow">Recall</p>
-          <h2>Flash cards</h2>
+          <p className="eyebrow">{t.recall}</p>
+          <h2>{t.flashcards}</h2>
         </div>
         <span>{index + 1} / {cards.length}</span>
       </div>
       <button className={`flashcard ${flipped ? "flipped" : ""}`} onClick={() => setFlipped(!flipped)}>
-        <span>{flipped ? "Answer" : "Question"}</span>
+        <span>{flipped ? t.answer : t.question}</span>
         <strong>{flipped ? card.back : card.front}</strong>
-        <small>Tap to {flipped ? "see the prompt" : "reveal"}</small>
+        <small>{flipped ? t.seePrompt : t.reveal}</small>
       </button>
       <div className="card-controls">
-        <button onClick={() => move(-1)}>Previous</button>
-        <button onClick={() => move(1)}>Next</button>
+        <button onClick={() => move(-1)}>{t.previous}</button>
+        <button onClick={() => move(1)}>{t.next}</button>
       </div>
-    </section>
-  );
-}
-
-function Practice({ lesson, onResult }: { lesson: Lesson; onResult: (score: number) => void }) {
-  const exercises = generateExercises(lesson.meta.generator);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [submitted, setSubmitted] = useState(false);
-
-  function submit() {
-    const correct = exercises.filter((exercise) => isCorrect(answers[exercise.id] ?? "", exercise.answer)).length;
-    const score = Math.round((correct / exercises.length) * 100);
-    setSubmitted(true);
-    onResult(score);
-  }
-
-  return (
-    <section className="study-block practice-block">
-      <div className="section-heading">
-        <div>
-          <p className="eyebrow">Apply</p>
-          <h2>Deterministic practice</h2>
-        </div>
-        <span>Seed {lesson.meta.generator.seed}</span>
-      </div>
-      <p className="section-intro">The same lesson always produces the same check. A score of 80% marks it complete.</p>
-      <ol className="exercise-list">
-        {exercises.map((exercise) => {
-          const correct = submitted && isCorrect(answers[exercise.id] ?? "", exercise.answer);
-          return (
-            <li key={exercise.id} className={submitted ? (correct ? "correct" : "incorrect") : ""}>
-              <label htmlFor={exercise.id}>{exercise.prompt}</label>
-              <input
-                id={exercise.id}
-                inputMode="decimal"
-                value={answers[exercise.id] ?? ""}
-                onChange={(event) => {
-                  setSubmitted(false);
-                  setAnswers({ ...answers, [exercise.id]: event.target.value });
-                }}
-                placeholder="Your answer"
-              />
-              {submitted && <small>{correct ? "Correct." : exercise.solution}</small>}
-            </li>
-          );
-        })}
-      </ol>
-      <button className="primary-button" onClick={submit}>Check the set</button>
     </section>
   );
 }
 
 export function App() {
+  const [locale, setLocale] = useState<Locale>(loadLocale);
+  const t = ui[locale];
+  const lessons = lessonsByLocale[locale];
+  const profiles = profilesByLocale[locale];
   const [progress, setProgress] = useState(loadProgress);
   const [profile, setProfile] = useState<Level>(progress.selectedProfile);
   const availableLessons = lessons.filter((lesson) => lesson.meta.level === profile);
@@ -172,10 +111,20 @@ export function App() {
   const selectedLesson = availableLessons.find((lesson) => lesson.meta.id === selectedId) ?? availableLessons[0];
   const [result, setResult] = useState<number | null>(null);
 
-  if (!selectedLesson) return <main>No lessons found.</main>;
+  useEffect(() => {
+    document.documentElement.lang = locale;
+    try {
+      localStorage.setItem(LANGUAGE_KEY, locale);
+    } catch {
+      // The selected language still applies for the current session.
+    }
+  }, [locale]);
+
+  if (!selectedLesson) return <main>{t.noLessons}</main>;
 
   const profileInfo = profiles.find((item) => item.level === profile)!;
-  const completed = availableLessons.filter(
+  const masteryLessons = availableLessons.filter((lesson) => lesson.meta.difficulty !== "olympiad");
+  const completed = masteryLessons.filter(
     (lesson) => progress.lessons[profile]?.[lesson.meta.id]?.completed,
   ).length;
 
@@ -194,6 +143,11 @@ export function App() {
     setResult(null);
   }
 
+  function changeLocale(nextLocale: Locale) {
+    setResult(null);
+    setLocale(nextLocale);
+  }
+
   function storeResult(score: number) {
     const nextProgress = recordAttempt(progress, profile, selectedLesson.meta.id, score);
     setProgress(nextProgress);
@@ -204,38 +158,47 @@ export function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="Maths Studio home">
+        <a className="brand" href="#top" aria-label={t.home}>
           <span>MS</span>
-          <strong>Maths Studio</strong>
+          <strong>Math Studio</strong>
         </a>
-        <div className="profile-tabs" aria-label="Anonymous learner profile">
+        <div className="profile-tabs" aria-label={t.learnerProfiles}>
           {profiles.map((item) => (
             <button
               key={item.level}
               className={profile === item.level ? "active" : ""}
               onClick={() => selectProfile(item.level)}
+              aria-pressed={profile === item.level}
             >
               {item.level}
             </button>
           ))}
         </div>
-        <div className="privacy-note"><span /> Local progress only</div>
+        <div className="topbar-actions">
+          <div className="privacy-note"><span /> {t.localProgress}</div>
+          <div className="language-toggle" role="group" aria-label={t.language}>
+            <button onClick={() => changeLocale("fr")} aria-pressed={locale === "fr"}>FR</button>
+            <span aria-hidden="true">|</span>
+            <button onClick={() => changeLocale("en")} aria-pressed={locale === "en"}>EN</button>
+          </div>
+        </div>
       </header>
 
       <aside className="sidebar">
         <div className="learner-card">
-          <p className="eyebrow">Anonymous profile</p>
+          <p className="eyebrow">{t.anonymousProfile}</p>
           <h1>{profileInfo.label}</h1>
           <p>{profileInfo.stage}</p>
           <small>{profileInfo.direction}</small>
-          <div className="progress-line"><span style={{ width: `${availableLessons.length ? (completed / availableLessons.length) * 100 : 0}%` }} /></div>
-          <b>{completed} of {availableLessons.length} lessons mastered</b>
+          <div className="progress-line"><span style={{ width: `${masteryLessons.length ? (completed / masteryLessons.length) * 100 : 0}%` }} /></div>
+          <b>{t.masteredCount(completed, masteryLessons.length)}</b>
         </div>
         <LessonList
           availableLessons={availableLessons}
           current={selectedLesson.meta.id}
           progress={progress}
           onSelect={selectLesson}
+          locale={locale}
         />
       </aside>
 
@@ -243,8 +206,8 @@ export function App() {
         <header className="lesson-hero">
           <div className="lesson-meta">
             <span>{selectedLesson.meta.strand}</span>
-            <span>{difficultyLabel[selectedLesson.meta.difficulty]}</span>
-            <span>{selectedLesson.meta.estimatedMinutes} min</span>
+            <span>{t.difficulty[selectedLesson.meta.difficulty]}</span>
+            <span>{selectedLesson.meta.estimatedMinutes} {t.minute}</span>
           </div>
           <h1>{selectedLesson.meta.title}</h1>
           <p>{selectedLesson.meta.summary}</p>
@@ -253,13 +216,14 @@ export function App() {
           </div>
         </header>
 
-        <section className="vocabulary" aria-label="English to French mathematical vocabulary">
-          <p className="eyebrow">Vocabulary · hover for meaning</p>
+        <section className="vocabulary" aria-label={t.vocabularyLabel}>
+          <p className="eyebrow">{t.vocabulary}</p>
           <div>
             {selectedLesson.meta.vocabulary.map((entry) => (
-              <abbr key={entry.en} title={`${entry.fr}: ${entry.definition}`}>
-                {entry.en} <span>{entry.fr}</span>
-              </abbr>
+              <details className="vocabulary-term" key={entry.en}>
+                <summary>{locale === "en" ? entry.en : entry.fr}</summary>
+                <span><strong>{locale === "en" ? entry.fr : entry.en}</strong>: {entry.definition}</span>
+              </details>
             ))}
           </div>
         </section>
@@ -270,13 +234,19 @@ export function App() {
           </ReactMarkdown>
         </article>
 
-        <Flashcards key={`cards-${selectedLesson.meta.id}`} cards={selectedLesson.meta.flashcards} />
-        <Practice key={`practice-${selectedLesson.meta.id}`} lesson={selectedLesson} onResult={storeResult} />
+        <Flashcards key={`cards-${selectedLesson.meta.id}`} cards={selectedLesson.meta.flashcards} locale={locale} />
+        <Practice
+          key={`practice-${selectedLesson.meta.id}-${locale}`}
+          lesson={selectedLesson}
+          onResult={storeResult}
+          onDirty={() => setResult(null)}
+          locale={locale}
+        />
 
         {result !== null && (
           <div className={`result-banner ${result >= 80 ? "mastered" : "keep-going"}`} role="status">
             <strong>{result}%</strong>
-            <span>{result >= 80 ? "Lesson mastered. Try the stretch route next." : "Good evidence. Review the worked examples and try again."}</span>
+            <span>{result >= 80 ? t.coreComplete : t.coreContinue}</span>
           </div>
         )}
       </main>

@@ -1,4 +1,4 @@
-# Maths Studio
+# Math Studio
 
 A local-first mathematics learning studio for anonymous learners entering French `5e`, `3e`, and `1re`. Lessons are plain Markdown, exercises are deterministically generated, and progress remains in the browser.
 

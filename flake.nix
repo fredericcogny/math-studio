@@ -52,7 +52,7 @@
           export NPM_CONFIG_CACHE="$PROJECT_ROOT/.cache/npm"
           export npm_config_update_notifier=false
 
-          printf '\nMaths Studio development shell\n'
+          printf '\nMath Studio development shell\n'
           printf '  npm install       install JavaScript dependencies\n'
           printf '  npm run dev       start the local app\n'
           printf '  antigravity .     open the IDE (configure its native sandbox)\n'

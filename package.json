@@ -8,6 +8,8 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:e2e:update": "playwright test --update-snapshots",
     "check": "npm run test && npm run build"
   },
   "dependencies": {
@@ -22,6 +24,7 @@
     "yaml": "^2.8.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.3",
     "vite": "^7.1.2",
