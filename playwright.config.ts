@@ -10,6 +10,9 @@ export default defineConfig({
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
   reporter: "html",
+  expect: {
+    toHaveScreenshot: { maxDiffPixelRatio: 0.005 },
+  },
   use: {
     baseURL: "http://localhost:5173",
     launchOptions: {
