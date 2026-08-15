@@ -41,6 +41,63 @@ generator:
   solutionMax: 12
   offsetMin: -15
   offsetMax: 15
+tieredExercises:
+  - id: "3e-equations-t1"
+    tier: 1
+    tierTitle: "Direct Application"
+    curriculumStatus: "core"
+    prompt: "Solve $5x-7=18$."
+    solution: "Add $7$ to both sides to obtain $5x=25$, then divide by $5$. Thus $x=5$."
+    hints:
+      - "Undo the subtraction of $7$ first."
+    assessment:
+      kind: "numeric"
+      expected: 5
+  - id: "3e-equations-t2"
+    tier: 2
+    tierTitle: "Standard Practice"
+    curriculumStatus: "core"
+    prompt: "A rectangle is $3$ cm longer than it is wide and has perimeter $34$ cm. Find its width and length by forming and solving an equation."
+    solution: "Let the width be $x$ cm, so the length is $x+3$ cm. Then $2x+2(x+3)=34$, hence $4x+6=34$, $4x=28$, and $x=7$. The rectangle is $7$ cm by $10$ cm."
+    hints:
+      - "Call the width $x$ and express the length in terms of $x$."
+      - "Use $P=2\\times\\text{width}+2\\times\\text{length}$."
+    assessment:
+      kind: "reasoning"
+      rubric:
+        - "Defines the unknown and forms an equivalent equation such as $2x+2(x+3)=34$."
+        - "Solves the equation correctly to obtain $x=7$."
+        - "Interprets the result as width $7$ cm and length $10$ cm."
+  - id: "3e-equations-t3"
+    tier: 3
+    tierTitle: "Synthesis"
+    curriculumStatus: "core"
+    prompt: "For each real value of $a$, classify the solutions of $(a-2)x=3a-6$. State when there is one solution, no solution, or infinitely many solutions."
+    solution: "Since $3a-6=3(a-2)$, the equation is $(a-2)x=3(a-2)$. If $a\\ne2$, division by $a-2$ gives the unique solution $x=3$. If $a=2$, the equation becomes $0=0$, so every real $x$ is a solution. There is no value of $a$ for which the equation has no solution."
+    hints:
+      - "Factor the right-hand side."
+      - "Do not divide by $a-2$ before treating the case where it is zero."
+    assessment:
+      kind: "reasoning"
+      rubric:
+        - "Separates the cases $a=2$ and $a\\ne2$."
+        - "Finds the unique solution $x=3$ when $a\\ne2$."
+        - "Identifies infinitely many solutions when $a=2$ and confirms that no parameter value gives no solutions."
+  - id: "3e-equations-t4"
+    tier: 4
+    tierTitle: "Advanced Challenge"
+    curriculumStatus: "olympiad"
+    prompt: "A shop sells only $3$-euro and $7$-euro notebooks. An order costs exactly $41$ euros. Find every possible pair $(x,y)$ of nonnegative integers, where $x$ is the number of $3$-euro notebooks and $y$ the number of $7$-euro notebooks, and prove that your list is complete."
+    solution: "We need $3x+7y=41$. Since $7y\\le41$, $0\\le y\\le5$. Because $41-7y=3x$, the number $41-7y$ must be divisible by $3$. Now $41$ leaves remainder $2$ when divided by $3$, and $7y$ has the same remainder as $y$ because $7=2\\times3+1$. Therefore $41-7y$ is divisible by $3$ exactly when $y$ leaves remainder $2$ when divided by $3$. In the range from $0$ to $5$, this gives $y=2$ or $y=5$. Then $x=(41-14)/3=9$ or $x=(41-35)/3=2$. Thus the complete list is $(9,2)$ and $(2,5)$. The bound and divisibility condition exclude every other nonnegative integer $y$."
+    hints:
+      - "Write the price equation $3x+7y=41$."
+      - "Bound $y$, then compare the remainders of $41$ and $7y$ after division by $3$."
+    assessment:
+      kind: "reasoning"
+      rubric:
+        - "Models the order with $3x+7y=41$ and nonnegative integers."
+        - "Finds both solutions $(9,2)$ and $(2,5)$."
+        - "Uses a bound and divisibility argument to prove completeness."
 ---
 ## Equality is a balance
 
