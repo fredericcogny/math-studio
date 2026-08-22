@@ -92,7 +92,7 @@ export function parseLesson(source: string, path: string): Lesson {
     throw new Error(`${path} is missing required lesson metadata`);
   }
 
-  if (!["5e", "3e", "1re", "TAL-spe", "TAL-exp"].includes(meta.level)) throw new Error(`${path} has an invalid level`);
+  if (!["5e", "4e", "3e", "1re", "TAL-spe", "TAL-exp"].includes(meta.level)) throw new Error(`${path} has an invalid level`);
   if (!["revision", "core", "stretch", "olympiad"].includes(meta.difficulty)) throw new Error(`${path} has an invalid difficulty`);
   if (!Number.isInteger(meta.order) || !Number.isFinite(meta.estimatedMinutes)) throw new Error(`${path} has invalid ordering or duration`);
   for (const field of ["objectives", "prerequisites", "vocabulary", "flashcards"] as const) {
@@ -255,7 +255,7 @@ function mergeTranslation(lesson: Lesson, translation: LessonTranslation, path: 
 const sourceLessons = Object.entries(rawLessons)
   .map(([path, source]) => parseLesson(source, path))
   .sort((a, b) => {
-    const levelOrder: Record<Level, number> = { "5e": 0, "3e": 1, "1re": 2, "TAL-spe": 3, "TAL-exp": 4 };
+    const levelOrder: Record<Level, number> = { "5e": 0, "4e": 1, "3e": 2, "1re": 3, "TAL-spe": 4, "TAL-exp": 5 };
     return levelOrder[a.meta.level] - levelOrder[b.meta.level] || a.meta.order - b.meta.order;
   });
 

@@ -150,6 +150,7 @@ export const ui = {
 export const profilesByLocale: Record<Locale, Array<{ level: Level; label: string; stage: string; direction: string }>> = {
   en: [
     { level: "5e", label: "5e Explorer", stage: "Entering 5e · age 12", direction: "Strong foundations, patterns, and first proofs" },
+    { level: "4e", label: "4e Explorer", stage: "Entering 4e · age 13", direction: "Fraction fluency, literal calculus, Pythagoras, and first equations" },
     { level: "3e", label: "3e Explorer", stage: "Entering 3e · age 14", direction: "Brevet fluency, algebra, and mathematical reasoning" },
     { level: "1re", label: "Première Specialty", stage: "Première générale · age 16", direction: "Analysis, derivatives, vector geometry, and probability" },
     { level: "TAL-spe", label: "Terminale Specialty", stage: "Terminale générale · age 17", direction: "Induction, limits, the IVT, logarithms, 3D space, and combinatorics" },
@@ -157,6 +158,7 @@ export const profilesByLocale: Record<Locale, Array<{ level: Level; label: strin
   ],
   fr: [
     { level: "5e", label: "Explorateur 5e", stage: "Entrée en 5e · 12 ans", direction: "Fondations solides, motifs et premières démonstrations" },
+    { level: "4e", label: "Explorateur 4e", stage: "Entrée en 4e · 13 ans", direction: "Maîtrise des fractions, calcul littéral, Pythagore et premières équations" },
     { level: "3e", label: "Explorateur 3e", stage: "Entrée en 3e · 14 ans", direction: "Maîtrise du Brevet, algèbre et raisonnement mathématique" },
     { level: "1re", label: "Première spécialité", stage: "Première générale · 16 ans", direction: "Analyse, dérivation, géométrie vectorielle et probabilités" },
     { level: "TAL-spe", label: "Terminale spécialité", stage: "Terminale générale · 17 ans", direction: "Récurrence, limites, TVI, logarithmes, espace et combinatoire" },

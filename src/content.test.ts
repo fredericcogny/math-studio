@@ -18,6 +18,20 @@ const expectedLessonIds: Record<Level, string[]> = {
     "5e-data-probability",
     "5e-algorithmic-thinking",
   ],
+  "4e": [
+    "4e-fraction-operations",
+    "4e-relative-number-operations",
+    "4e-powers-notation",
+    "4e-literal-calculus",
+    "4e-first-degree-equations",
+    "4e-proportionality-percentages",
+    "4e-statistics-central-tendency",
+    "4e-pythagorean-theorem",
+    "4e-translation-vectors",
+    "4e-triangles-parallel-lines",
+    "4e-cosine-right-triangle",
+    "4e-programming-conditionals",
+  ],
   "3e": [
     "3e-linear-equations",
     "3e-arithmetic-primes",
@@ -85,8 +99,8 @@ describe("lesson content", () => {
   });
 
   it("provides complete English and French versions of every lesson", () => {
-    expect(lessonsByLocale.en).toHaveLength(43);
-    expect(lessonsByLocale.fr).toHaveLength(43);
+    expect(lessonsByLocale.en).toHaveLength(55);
+    expect(lessonsByLocale.fr).toHaveLength(55);
     expect(lessonsByLocale.en.map((lesson) => lesson.meta.id)).toEqual(
       lessonsByLocale.fr.map((lesson) => lesson.meta.id),
     );

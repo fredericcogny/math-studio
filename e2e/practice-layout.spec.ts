@@ -15,6 +15,20 @@ const curricula = {
     "Data Displays, Mean, and Probability",
     "Block Algorithms, Formulas, and Loops",
   ],
+  "4e": [
+    "Fraction Operations: All Four",
+    "Multiplying and Dividing Signed Numbers",
+    "Powers and Their Rules",
+    "Expanding, Factoring, and Reducing Expressions",
+    "First-Degree Equations",
+    "Proportionality, Percentages, and Scales",
+    "Mean, Median, and Range",
+    "The Pythagorean Theorem",
+    "Translation and Vectors",
+    "Triangles, Midpoints, and Parallel Lines",
+    "Cosine of an Acute Angle",
+    "Variables, Loops, and Conditionals",
+  ],
   "3e": [
     "Equations as Reversible Machines",
     "Prime Factors and the Euclidean Algorithm",
@@ -105,6 +119,23 @@ test.describe("desktop practice layout", () => {
     await expect(page.getByRole("heading", { name: "Les nombres relatifs, sans deviner" })).toBeVisible();
     await page.getByRole("group", { name: "Langue" }).getByRole("button", { name: "EN" }).click();
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  });
+
+  test("renders French flashcard formulas instead of raw LaTeX", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("group", { name: "Language" }).getByRole("button", { name: "FR" }).click();
+    const flashcards = page.locator(".flashcard-block");
+    await flashcards.getByRole("button", { name: "Suivante", exact: true }).click();
+
+    const card = flashcards.locator(".flashcard");
+    await expect(card.locator(".katex")).toHaveCount(2);
+    await expect(card.locator(".katex-html").first()).toContainText("−3,08");
+    await expect(card).not.toContainText("$");
+
+    await card.click();
+    await expect(card.locator(".katex")).toHaveCount(1);
+    await expect(card.locator(".katex-html")).toContainText("−3,08");
+    await expect(card).not.toContainText("$");
   });
 
   test("renders a full-width answer field with concise English labels", async ({ page }) => {
