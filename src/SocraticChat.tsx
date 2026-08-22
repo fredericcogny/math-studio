@@ -1,8 +1,6 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import rehypeKatex from "rehype-katex";
-import remarkMath from "remark-math";
 import { ui } from "./i18n";
+import { MathMarkdown } from "./MathMarkdown";
 import { askSocraticTutor, type SocraticMessage } from "./socraticApi";
 import type { Locale } from "./types";
 
@@ -105,9 +103,7 @@ export function SocraticChat({ exercisePrompt, exerciseSolution, lessonTitle, lo
               <div key={idx} className={`socratic-bubble ${msg.sender}`}>
                 <span className="sender-tag">{msg.sender === "user" ? t.you : t.tutor}</span>
                 <div className="message-content">
-                  <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-                    {msg.text}
-                  </ReactMarkdown>
+                  <MathMarkdown>{msg.text}</MathMarkdown>
                 </div>
                 <small className="timestamp">{msg.timestamp}</small>
               </div>

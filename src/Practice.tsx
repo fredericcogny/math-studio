@@ -1,10 +1,8 @@
 import { useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import rehypeKatex from "rehype-katex";
-import remarkMath from "remark-math";
 import { calculateCoreScore, checkAssessment } from "./assessment";
 import { generateExercises } from "./exercises";
 import { ui } from "./i18n";
+import { MathMarkdown } from "./MathMarkdown";
 import { SocraticChat } from "./SocraticChat";
 import type { Exercise, Lesson, Locale, TieredExercise } from "./types";
 
@@ -169,7 +167,7 @@ export function Practice({
                 <span className={`curriculum-status ${exercise.curriculumStatus}`}>{t.status[exercise.curriculumStatus]}</span>
               </div>
               <label htmlFor={exercise.id} className="exercise-prompt">
-                <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{exercise.prompt}</ReactMarkdown>
+                <MathMarkdown>{exercise.prompt}</MathMarkdown>
               </label>
 
               <div className={`exercise-input-row ${assessment.kind === "reasoning" ? "reasoning" : ""}`}>
@@ -200,14 +198,14 @@ export function Practice({
 
               <details className="exercise-hints">
                 <summary>{t.hints} ({exercise.hints.length})</summary>
-                <ol>{exercise.hints.map((hint) => <li key={hint}>{hint}</li>)}</ol>
+                <ol>{exercise.hints.map((hint) => <li key={hint}><MathMarkdown inline>{hint}</MathMarkdown></li>)}</ol>
               </details>
 
               {reasoningRevealed && assessment.kind === "reasoning" && (
                 <div className="reasoning-review" id={`${exercise.id}-feedback`}>
                   <div className="solution-box">
                     <strong>{t.modelSolution}</strong>
-                    <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{exercise.solution}</ReactMarkdown>
+                    <MathMarkdown>{exercise.solution}</MathMarkdown>
                   </div>
                   <fieldset>
                     <legend>{t.rubricLegend}</legend>
@@ -218,7 +216,7 @@ export function Practice({
                           checked={(rubricChecks[exercise.id] ?? []).includes(criterion)}
                           onChange={(event) => toggleCriterion(exercise.id, criterion, event.target.checked)}
                         />
-                        <span>{criterion}</span>
+                        <span><MathMarkdown inline>{criterion}</MathMarkdown></span>
                       </label>
                     ))}
                   </fieldset>
@@ -235,7 +233,7 @@ export function Practice({
               {hasResult && assessment.kind !== "reasoning" && !correct && (
                 <div className="solution-box">
                   <strong>{t.solution}</strong>
-                  <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>{exercise.solution}</ReactMarkdown>
+                  <MathMarkdown>{exercise.solution}</MathMarkdown>
                 </div>
               )}
 

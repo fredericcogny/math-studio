@@ -311,7 +311,7 @@ button {
 
 .lesson-link {
   display: grid;
-  grid-template-columns: 28px 1fr 20px;
+  grid-template-columns: 28px 1fr 20px 24px;
   gap: 8px;
   align-items: center;
   width: 100%;
@@ -370,6 +370,36 @@ button {
   border-color: var(--teal);
   background: var(--teal);
   color: white;
+}
+
+.lesson-link-share {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 150ms ease, color 150ms ease;
+}
+
+.lesson-link:hover .lesson-link-share,
+.lesson-link-share:focus-visible {
+  opacity: 1;
+}
+
+.lesson-link-share:hover {
+  color: var(--teal);
+}
+
+.lesson-link-share.copied {
+  opacity: 1;
+  color: var(--teal);
+}
+
+.lesson-link-share svg {
+  display: block;
 }
 
 .lesson {
@@ -1316,6 +1346,9 @@ button {
   & .socratic-input-bar input { background: #1e1e1e; border-color: var(--line); color: var(--ink); }
   & .socratic-input-bar button { background: #1d4ed8; }
   & .status { border-color: #555; color: #777; }
+  & .lesson-link-share { color: #777; }
+  & .lesson-link-share:hover,
+  & .lesson-link-share.copied { color: var(--teal); }
 }}
 
 :root[data-theme="dark"] {
@@ -1367,4 +1400,7 @@ button {
   & .socratic-input-bar input { background: #1e1e1e; border-color: var(--line); color: var(--ink); }
   & .socratic-input-bar button { background: #1d4ed8; }
   & .status { border-color: #555; color: #777; }
+  & .lesson-link-share { color: #777; }
+  & .lesson-link-share:hover,
+  & .lesson-link-share.copied { color: var(--teal); }
 }

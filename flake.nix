@@ -11,7 +11,7 @@
         config.allowUnfree = true;
       };
 
-      agent-tools = with pkgs; [ bash cacert coreutils curl git gh jq nodejs_22 ripgrep ];
+      agent-tools = with pkgs; [ bash cacert coreutils curl git gh jq nodejs_24 ripgrep ];
       agent-closure = pkgs.closureInfo { rootPaths = agent-tools; };
 
       agent-shell = pkgs.writeShellApplication {
@@ -40,7 +40,7 @@
           gh
           git
           jq
-          nodejs_22
+          nodejs_24
           nsjail
           ripgrep
         ];

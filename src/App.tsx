@@ -13,10 +13,35 @@ import type { Lesson, Level, Locale } from "./types";
 
 const LANGUAGE_KEY = "maths-studio.language";
 const THEME_KEY = "maths-studio.theme";
+const VALID_LEVELS: Level[] = ["5e", "4e", "3e", "1re", "TAL-spe", "TAL-exp"];
+const VALID_LOCALES: Locale[] = ["en", "fr"];
 
 type Theme = "system" | "light" | "dark";
 
+function parseUrlParams(): { level?: Level; lesson?: string; lang?: Locale } {
+  const params = new URLSearchParams(window.location.search);
+  const level = params.get("level") as Level | null;
+  const lesson = params.get("lesson");
+  const lang = params.get("lang") as Locale | null;
+  return {
+    level: level && VALID_LEVELS.includes(level) ? level : undefined,
+    lesson: lesson ?? undefined,
+    lang: lang && VALID_LOCALES.includes(lang) ? lang : undefined,
+  };
+}
+
+function syncUrl(level: Level, lessonId: string, locale: Locale) {
+  const params = new URLSearchParams();
+  params.set("level", level);
+  params.set("lesson", lessonId);
+  params.set("lang", locale);
+  const url = `${window.location.pathname}?${params.toString()}`;
+  history.replaceState(null, "", url);
+}
+
 function loadLocale(): Locale {
+  const urlParams = parseUrlParams();
+  if (urlParams.lang) return urlParams.lang;
   try {
     return localStorage.getItem(LANGUAGE_KEY) === "fr" ? "fr" : "en";
   } catch {
@@ -49,14 +74,31 @@ function LessonList({
   progress,
   onSelect,
   locale,
+  level,
 }: {
   availableLessons: Lesson[];
   current: string;
   progress: ProgressState;
   onSelect: (lesson: Lesson) => void;
   locale: Locale;
+  level: Level;
 }) {
   const t = ui[locale];
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  function shareLesson(e: React.MouseEvent, lessonId: string) {
+    e.stopPropagation();
+    const params = new URLSearchParams();
+    params.set("level", level);
+    params.set("lesson", lessonId);
+    params.set("lang", locale);
+    const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopiedId(lessonId);
+      setTimeout(() => setCopiedId(null), 1500);
+    });
+  }
+
   return (
     <nav className="lesson-list" aria-label={t.lessons}>
       <p className="eyebrow">{t.curriculum} · {availableLessons.length} {t.lessonCount}</p>
@@ -76,6 +118,20 @@ function LessonList({
             </span>
             <span className={state?.completed ? "status complete" : "status"}>
               {state?.completed ? "✓" : "·"}
+            </span>
+            <span
+              className={`lesson-link-share ${copiedId === lesson.meta.id ? "copied" : ""}`}
+              role="button"
+              tabIndex={0}
+              aria-label={t.share}
+              onClick={(e) => shareLesson(e, lesson.meta.id)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); shareLesson(e as unknown as React.MouseEvent, lesson.meta.id); } }}
+            >
+              {copiedId === lesson.meta.id ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              )}
             </span>
           </button>
         );
@@ -126,11 +182,27 @@ export function App() {
   const lessons = lessonsByLocale[locale];
   const profiles = profilesByLocale[locale];
   const [progress, setProgress] = useState(loadProgress);
-  const [profile, setProfile] = useState<Level>(progress.selectedProfile);
+
+  // Resolve initial profile and lesson from URL params
+  const urlParams = parseUrlParams();
+  const initialProfile = urlParams.level ?? progress.selectedProfile;
+  const initialLessonsForProfile = lessons.filter((l) => l.meta.level === initialProfile);
+  const initialLessonId = urlParams.lesson && initialLessonsForProfile.some((l) => l.meta.id === urlParams.lesson)
+    ? urlParams.lesson
+    : initialLessonsForProfile[0]?.meta.id ?? "";
+
+  const [profile, setProfile] = useState<Level>(initialProfile);
   const availableLessons = lessons.filter((lesson) => lesson.meta.level === profile);
-  const [selectedId, setSelectedId] = useState(availableLessons[0]?.meta.id ?? "");
+  const [selectedId, setSelectedId] = useState(initialLessonId);
   const selectedLesson = availableLessons.find((lesson) => lesson.meta.id === selectedId) ?? availableLessons[0];
   const [result, setResult] = useState<number | null>(null);
+
+  // Sync URL on mount and whenever navigation state changes
+  useEffect(() => {
+    if (selectedLesson) {
+      syncUrl(profile, selectedLesson.meta.id, locale);
+    }
+  }, [profile, selectedLesson?.meta.id, locale]);
 
   useEffect(() => {
     document.documentElement.lang = locale;
@@ -242,6 +314,7 @@ export function App() {
           progress={progress}
           onSelect={selectLesson}
           locale={locale}
+          level={profile}
         />
       </aside>
 

@@ -72,6 +72,8 @@ export const ui = {
       error: "I am having trouble connecting right now. Review the lesson definition or rephrase your question.",
       typing: "Tutor is typing",
     },
+    copied: "Copied!",
+    share: "Share",
   },
   fr: {
     home: "Accueil de Math Studio",
@@ -144,6 +146,8 @@ export const ui = {
       error: "La connexion rencontre un problème. Relisez la définition dans la leçon ou reformulez votre question.",
       typing: "Le tuteur rédige sa réponse",
     },
+    copied: "Copié !",
+    share: "Partager",
   },
 } as const;
 
