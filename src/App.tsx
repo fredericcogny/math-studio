@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import rehypeKatex from "rehype-katex";
-import remarkMath from "remark-math";
 import { lessonsByLocale } from "./content";
 import { profilesByLocale, ui } from "./i18n";
+import { MathMarkdown } from "./MathMarkdown";
 import {
   loadProgress,
   recordAttempt,
@@ -14,12 +12,34 @@ import { Practice } from "./Practice";
 import type { Lesson, Level, Locale } from "./types";
 
 const LANGUAGE_KEY = "maths-studio.language";
+const THEME_KEY = "maths-studio.theme";
+
+type Theme = "system" | "light" | "dark";
 
 function loadLocale(): Locale {
   try {
     return localStorage.getItem(LANGUAGE_KEY) === "fr" ? "fr" : "en";
   } catch {
     return "en";
+  }
+}
+
+function loadTheme(): Theme {
+  try {
+    const stored = localStorage.getItem(THEME_KEY);
+    if (stored === "light" || stored === "dark") return stored;
+  } catch {
+    // fall through
+  }
+  return "system";
+}
+
+function applyTheme(theme: Theme) {
+  const root = document.documentElement;
+  if (theme === "system") {
+    root.removeAttribute("data-theme");
+  } else {
+    root.setAttribute("data-theme", theme);
   }
 }
 
@@ -88,7 +108,7 @@ function Flashcards({ cards, locale }: { cards: Lesson["meta"]["flashcards"]; lo
       </div>
       <button className={`flashcard ${flipped ? "flipped" : ""}`} onClick={() => setFlipped(!flipped)}>
         <span>{flipped ? t.answer : t.question}</span>
-        <strong>{flipped ? card.back : card.front}</strong>
+        <strong><MathMarkdown inline>{flipped ? card.back : card.front}</MathMarkdown></strong>
         <small>{flipped ? t.seePrompt : t.reveal}</small>
       </button>
       <div className="card-controls">
@@ -101,6 +121,7 @@ function Flashcards({ cards, locale }: { cards: Lesson["meta"]["flashcards"]; lo
 
 export function App() {
   const [locale, setLocale] = useState<Locale>(loadLocale);
+  const [theme, setTheme] = useState<Theme>(loadTheme);
   const t = ui[locale];
   const lessons = lessonsByLocale[locale];
   const profiles = profilesByLocale[locale];
@@ -119,6 +140,15 @@ export function App() {
       // The selected language still applies for the current session.
     }
   }, [locale]);
+
+  useEffect(() => {
+    applyTheme(theme);
+    try {
+      localStorage.setItem(THEME_KEY, theme);
+    } catch {
+      // The selected theme still applies for the current session.
+    }
+  }, [theme]);
 
   if (!selectedLesson) return <main>{t.noLessons}</main>;
 
@@ -176,6 +206,19 @@ export function App() {
         </div>
         <div className="topbar-actions">
           <div className="privacy-note"><span /> {t.localProgress}</div>
+          <div className="theme-toggle" role="group" aria-label={locale === "fr" ? "Thème" : "Theme"}>
+            <button onClick={() => setTheme("system")} aria-pressed={theme === "system"} title={locale === "fr" ? "Système" : "System"}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+            </button>
+            <span aria-hidden="true">|</span>
+            <button onClick={() => setTheme("light")} aria-pressed={theme === "light"} title={locale === "fr" ? "Clair" : "Light"}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </button>
+            <span aria-hidden="true">|</span>
+            <button onClick={() => setTheme("dark")} aria-pressed={theme === "dark"} title={locale === "fr" ? "Sombre" : "Dark"}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+          </div>
           <div className="language-toggle" role="group" aria-label={t.language}>
             <button onClick={() => changeLocale("fr")} aria-pressed={locale === "fr"}>FR</button>
             <span aria-hidden="true">|</span>
@@ -212,7 +255,9 @@ export function App() {
           <h1>{selectedLesson.meta.title}</h1>
           <p>{selectedLesson.meta.summary}</p>
           <div className="objectives">
-            {selectedLesson.meta.objectives.map((objective) => <span key={objective}>{objective}</span>)}
+            {selectedLesson.meta.objectives.map((objective) => (
+              <span key={objective}><MathMarkdown inline>{objective}</MathMarkdown></span>
+            ))}
           </div>
         </header>
 
@@ -222,16 +267,16 @@ export function App() {
             {selectedLesson.meta.vocabulary.map((entry) => (
               <details className="vocabulary-term" key={entry.en}>
                 <summary>{locale === "en" ? entry.en : entry.fr}</summary>
-                <span><strong>{locale === "en" ? entry.fr : entry.en}</strong>: {entry.definition}</span>
+                <span>
+                  <strong>{locale === "en" ? entry.fr : entry.en}</strong>: <MathMarkdown inline>{entry.definition}</MathMarkdown>
+                </span>
               </details>
             ))}
           </div>
         </section>
 
         <article className="lesson-copy">
-          <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-            {selectedLesson.body}
-          </ReactMarkdown>
+          <MathMarkdown>{selectedLesson.body}</MathMarkdown>
         </article>
 
         <Flashcards key={`cards-${selectedLesson.meta.id}`} cards={selectedLesson.meta.flashcards} locale={locale} />

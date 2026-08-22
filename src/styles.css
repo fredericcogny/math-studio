@@ -14,6 +14,36 @@
   --muted: #6e746f;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    color: #e8e4dc;
+    background: #1a1a1a;
+    --ink: #e8e4dc;
+    --paper: #242424;
+    --warm: #1a1a1a;
+    --red: #e06050;
+    --teal: #3aad9f;
+    --gold: #e0b44e;
+    --line: #3d3d3d;
+    --muted: #9a9a9a;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  color: #e8e4dc;
+  background: #1a1a1a;
+  --ink: #e8e4dc;
+  --paper: #242424;
+  --warm: #1a1a1a;
+  --red: #e06050;
+  --teal: #3aad9f;
+  --gold: #e0b44e;
+  --line: #3d3d3d;
+  --muted: #9a9a9a;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -144,6 +174,37 @@ button {
 
 .topbar-actions .privacy-note {
   padding-right: 0;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--muted);
+}
+
+.theme-toggle > span {
+  opacity: 0.35;
+}
+
+.theme-toggle button {
+  display: grid;
+  place-items: center;
+  padding: 7px 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+
+.theme-toggle button[aria-pressed="true"] {
+  color: var(--red);
+}
+
+.theme-toggle svg {
+  display: block;
 }
 
 .language-toggle {
@@ -533,8 +594,8 @@ button {
   background: var(--ink);
 }
 
-.flashcard span,
-.flashcard small {
+.flashcard > span,
+.flashcard > small {
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -549,6 +610,10 @@ button {
   font-size: clamp(24px, 4vw, 38px);
   font-weight: 400;
   line-height: 1.25;
+}
+
+.flashcard .katex {
+  font-size: inherit;
 }
 
 .card-controls {
@@ -1199,4 +1264,107 @@ button {
   .exercise-input-row .result-tag {
     align-self: flex-start;
   }
+}
+
+/* --- Dark mode overrides for hardcoded colors --- */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  & body {
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      var(--warm);
+    background-size: 24px 24px;
+  }
+  & .topbar { background: rgba(36, 36, 36, 0.96); }
+  & .profile-tabs { background: #2e2e2e; }
+  & .sidebar { background: #222222; }
+  & .lesson-link { border-bottom-color: var(--line); }
+  & .lesson-link:hover,
+  & .lesson-link.active { background: rgba(255, 255, 255, 0.06); }
+  & .progress-line { background: #333; }
+  & .lesson-hero > p { color: var(--muted); }
+  & .lesson-meta span,
+  & .objectives span { background: rgba(255, 255, 255, 0.06); }
+  & .vocabulary-term > span { background: #2a2a2a; }
+  & .lesson-copy blockquote { background: rgba(224, 180, 78, 0.08); }
+  & .lesson-copy code { background: #2e2e2e; }
+  & .study-block { box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.3); }
+  & .exercise-list input,
+  & .exercise-input-row input,
+  & .exercise-input-row textarea { background: #2a2a2a; color: var(--ink); border-color: var(--line); }
+  & .exercise-list .exercise-card { background: rgba(255, 255, 255, 0.04); }
+  & .exercise-card.correct { background: rgba(22, 101, 52, 0.15); border-left-color: #3aad9f; }
+  & .exercise-card.incorrect { background: rgba(153, 27, 27, 0.15); border-left-color: #e06050; }
+  & .solution-box { background: #2a2a2a; border-left-color: var(--teal); }
+  & .result-tag.correct { background: rgba(22, 101, 52, 0.2); color: #6ee7b7; }
+  & .result-tag.incorrect { background: rgba(153, 27, 27, 0.2); color: #fca5a5; }
+  & .result-tag.review { background: rgba(154, 52, 18, 0.2); color: #fdba74; }
+  & .tier-badge.tier-1 { background: rgba(22, 101, 52, 0.2); color: #86efac; border-color: rgba(134, 239, 172, 0.3); }
+  & .tier-badge.tier-2 { background: rgba(30, 64, 175, 0.2); color: #93c5fd; border-color: rgba(147, 197, 253, 0.3); }
+  & .tier-badge.tier-3 { background: rgba(107, 33, 168, 0.2); color: #d8b4fe; border-color: rgba(216, 180, 254, 0.3); }
+  & .tier-badge.tier-4 { background: rgba(154, 52, 18, 0.2); color: #fdba74; border-color: rgba(253, 186, 116, 0.3); }
+  & .socratic-toggle-btn { background: #2a2a2a; border-color: var(--line); color: var(--ink); }
+  & .socratic-toggle-btn:hover { background: #333; border-color: #555; }
+  & .socratic-chat-card { background: #2a2a2a; border-color: var(--line); }
+  & .socratic-messages { background: #1e1e1e; }
+  & .socratic-welcome p { color: var(--muted); }
+  & .quick-prompts button { background: #2a2a2a; border-color: var(--line); color: var(--ink); }
+  & .quick-prompts button:hover { background: #333; }
+  & .socratic-bubble.user { background: #1d4ed8; }
+  & .socratic-bubble.bot { background: #2a2a2a; border-color: var(--line); color: var(--ink); }
+  & .socratic-input-bar { background: #2a2a2a; border-top-color: var(--line); }
+  & .socratic-input-bar input { background: #1e1e1e; border-color: var(--line); color: var(--ink); }
+  & .socratic-input-bar button { background: #1d4ed8; }
+  & .status { border-color: #555; color: #777; }
+}}
+
+:root[data-theme="dark"] {
+  & body {
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      var(--warm);
+    background-size: 24px 24px;
+  }
+  & .topbar { background: rgba(36, 36, 36, 0.96); }
+  & .profile-tabs { background: #2e2e2e; }
+  & .sidebar { background: #222222; }
+  & .lesson-link { border-bottom-color: var(--line); }
+  & .lesson-link:hover,
+  & .lesson-link.active { background: rgba(255, 255, 255, 0.06); }
+  & .progress-line { background: #333; }
+  & .lesson-hero > p { color: var(--muted); }
+  & .lesson-meta span,
+  & .objectives span { background: rgba(255, 255, 255, 0.06); }
+  & .vocabulary-term > span { background: #2a2a2a; }
+  & .lesson-copy blockquote { background: rgba(224, 180, 78, 0.08); }
+  & .lesson-copy code { background: #2e2e2e; }
+  & .study-block { box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.3); }
+  & .exercise-list input,
+  & .exercise-input-row input,
+  & .exercise-input-row textarea { background: #2a2a2a; color: var(--ink); border-color: var(--line); }
+  & .exercise-list .exercise-card { background: rgba(255, 255, 255, 0.04); }
+  & .exercise-card.correct { background: rgba(22, 101, 52, 0.15); border-left-color: #3aad9f; }
+  & .exercise-card.incorrect { background: rgba(153, 27, 27, 0.15); border-left-color: #e06050; }
+  & .solution-box { background: #2a2a2a; border-left-color: var(--teal); }
+  & .result-tag.correct { background: rgba(22, 101, 52, 0.2); color: #6ee7b7; }
+  & .result-tag.incorrect { background: rgba(153, 27, 27, 0.2); color: #fca5a5; }
+  & .result-tag.review { background: rgba(154, 52, 18, 0.2); color: #fdba74; }
+  & .tier-badge.tier-1 { background: rgba(22, 101, 52, 0.2); color: #86efac; border-color: rgba(134, 239, 172, 0.3); }
+  & .tier-badge.tier-2 { background: rgba(30, 64, 175, 0.2); color: #93c5fd; border-color: rgba(147, 197, 253, 0.3); }
+  & .tier-badge.tier-3 { background: rgba(107, 33, 168, 0.2); color: #d8b4fe; border-color: rgba(216, 180, 254, 0.3); }
+  & .tier-badge.tier-4 { background: rgba(154, 52, 18, 0.2); color: #fdba74; border-color: rgba(253, 186, 116, 0.3); }
+  & .socratic-toggle-btn { background: #2a2a2a; border-color: var(--line); color: var(--ink); }
+  & .socratic-toggle-btn:hover { background: #333; border-color: #555; }
+  & .socratic-chat-card { background: #2a2a2a; border-color: var(--line); }
+  & .socratic-messages { background: #1e1e1e; }
+  & .socratic-welcome p { color: var(--muted); }
+  & .quick-prompts button { background: #2a2a2a; border-color: var(--line); color: var(--ink); }
+  & .quick-prompts button:hover { background: #333; }
+  & .socratic-bubble.user { background: #1d4ed8; }
+  & .socratic-bubble.bot { background: #2a2a2a; border-color: var(--line); color: var(--ink); }
+  & .socratic-input-bar { background: #2a2a2a; border-top-color: var(--line); }
+  & .socratic-input-bar input { background: #1e1e1e; border-color: var(--line); color: var(--ink); }
+  & .socratic-input-bar button { background: #1d4ed8; }
+  & .status { border-color: #555; color: #777; }
 }
