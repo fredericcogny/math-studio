@@ -50,6 +50,21 @@ const expectedLessonIds: Record<Level, string[]> = {
     "3e-programming-algorithms",
     "3e-modular-patterns",
   ],
+  "2de": [
+    "2de-number-sets-intervals",
+    "2de-roots-powers",
+    "2de-equations-inequalities",
+    "2de-percentages-evolutions",
+    "2de-functions-variations",
+    "2de-reference-functions",
+    "2de-coordinate-geometry",
+    "2de-vectors-collinearity",
+    "2de-lines-equations",
+    "2de-trigonometry-projection",
+    "2de-statistics-indicators",
+    "2de-probability-finite",
+    "2de-python-algorithms",
+  ],
   "1re": [
     "1re-quadratics",
     "1re-invariants",
@@ -99,8 +114,8 @@ describe("lesson content", () => {
   });
 
   it("provides complete English and French versions of every lesson", () => {
-    expect(lessonsByLocale.en).toHaveLength(55);
-    expect(lessonsByLocale.fr).toHaveLength(55);
+    expect(lessonsByLocale.en).toHaveLength(68);
+    expect(lessonsByLocale.fr).toHaveLength(68);
     expect(lessonsByLocale.en.map((lesson) => lesson.meta.id)).toEqual(
       lessonsByLocale.fr.map((lesson) => lesson.meta.id),
     );
