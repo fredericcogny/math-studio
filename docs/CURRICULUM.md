@@ -31,6 +31,21 @@ The core route builds fluent `Brevet` knowledge while turning procedural work in
 
 The implemented 3e route contains 15 core lessons plus one optional modular-arithmetic extension.
 
+## Entering 2de
+
+The core route follows `Seconde générale et technologique`, the common year that turns collège technique into lycée reasoning, with an explicit emphasis on exact calculation and complete case discussion.
+
+- Numbers and calculations: number sets from the naturals to the reals, intervals, absolute value as a distance, exact work with square roots and integer powers, scientific notation
+- Algebra: expanding and factoring by choice of form, product equations, forbidden values, inequalities and sign tables of products and quotients
+- Proportionality: multiplying coefficients, evolution rates, successive and reciprocal evolutions, percentage points
+- Functions: domain, images and preimages, variation tables, counting solutions of an equation, and the affine, square and inverse reference functions
+- Geometry: distance and midpoint in an orthonormal frame, vectors and collinearity by determinant, reduced and Cartesian equations of lines, systems, right-triangle trigonometry and orthogonal projection
+- Statistics and probability: mean, median, quartiles, range, interquartile range, standard deviation, sampling fluctuation, probability distributions on a finite set, unions, intersections and complements
+- Algorithmics: tracing a program, counted and conditional loops, functions, lists, termination and loop invariants
+- Stretch: irrationality proofs, parameter classification, inclusion-exclusion for three events and correctness proofs
+
+The implemented 2de route contains 13 ordered lessons covering every domain above.
+
 ## Entering 1re
 
 The core route follows `Première générale`, with mathematics as a speciality and supporting links to physics-chemistry and engineering science. The long runway points toward `Terminale`, then CPGE mathematics.

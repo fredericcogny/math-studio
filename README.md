@@ -1,8 +1,29 @@
 # Math Studio
 
-A local-first mathematics learning studio for anonymous learners entering French `5e`, `3e`, and `1re`. Lessons are plain Markdown, exercises are deterministically generated, and progress remains in the browser.
+**[▶ Open Math Studio](https://fredericcogny.github.io/math-studio/)**
 
-## Start
+Math Studio is a free mathematics learning studio for the French secondary school programme, from `5e` to `Terminale`. Open the link, pick the year you are entering, and start working. There is nothing to install, no account to create, and no name to give.
+
+![The Math Studio interface, showing the 2de track with its lesson list, a lesson on functions and variation tables, and the bilingual vocabulary bar](docs/images/math-studio-screenshot.png)
+
+## What you will find
+
+- **Seven tracks**, one per year of the programme: `5e`, `4e`, `3e`, `2de`, `1re`, `Terminale spécialité`, and `Terminale mathématiques expertes`.
+- **68 lessons** in all, each one a short read with clear objectives, key vocabulary, and worked ideas rather than a wall of rules.
+- **Four exercises per lesson**, rising from a direct application to an advanced challenge, each with progressive hints and a full model solution.
+- **Flashcards** for quick retrieval practice, plus extra generated drills when you want more repetition.
+- **Everything in English and French.** One click on `EN` or `FR` switches the whole app, including every lesson, hint, and solution.
+- **A Socratic tutor** that asks questions instead of handing over answers, when a key has been configured.
+
+A lesson counts as mastered once you score at least 80% on its core exercises. Stretch and challenge work stays optional, so you can go deeper without being penalized for skipping it.
+
+## Your progress stays with you
+
+Progress is saved in your own browser, under `maths-studio.progress.v1`. It is never uploaded anywhere, and no profile asks for your name. Clearing your browser data resets it, and using a different browser or device starts a fresh slate.
+
+The address bar always reflects what you are looking at, so the **Share** button gives a link that reopens the exact lesson, level, and language you were on.
+
+## For developers
 
 Nix flakes must be enabled on the host.
 
@@ -12,7 +33,7 @@ npm install
 npm run dev
 ```
 
-The flake supplies Node.js 22, Git, GitHub CLI, Antigravity, Bubblewrap, nsjail, curl, jq, and ripgrep. `package-lock.json` pins the JavaScript dependency graph after the first install.
+The flake supplies Node.js 24, Git, GitHub CLI, curl, jq, and ripgrep. `package-lock.json` pins the JavaScript dependency graph after the first install.
 
 Useful commands:
 
@@ -21,51 +42,12 @@ npm run dev       # local Vite server
 npm run test      # deterministic engine tests
 npm run build     # type-check and production build
 npm run check     # tests and build
-gh auth status    # inspect GitHub authentication when configured
+npm run test:e2e  # Playwright layout and curriculum tests
 ```
 
-## Antigravity isolation
+Pushing to `main` builds the app and publishes it to GitHub Pages through `.github/workflows/deploy.yml`.
 
-Launch the IDE normally from the development shell:
-
-```bash
-antigravity .
-```
-
-Antigravity settings are user-level and therefore cannot safely be committed by this repository. Before allowing autonomous commands, set these options in **Antigravity User Settings**:
-
-1. Leave **Agent Non-Workspace File Access** disabled.
-2. Enable **Terminal Sandboxing**. On Linux, Antigravity uses nsjail.
-3. Enable **Sandbox Allow Network** so research, package downloads, and GitHub work.
-4. Keep this repository as the only project workspace root.
-5. Do not enable strict mode for this use case because it forces sandbox network access off.
-
-The workspace policy in `.agents/rules/project.md` adds behavioural guidance, but rules alone are not a security boundary. The native terminal sandbox and workspace access setting provide the actual boundary.
-
-## Other CLI agents
-
-Run a CLI agent or a shell through the Bubblewrap boundary:
-
-```bash
-agent-shell
-agent-shell some-agent --its-options
-```
-
-The sandbox exposes the repository at `/workspace`, only the read-only Nix closures of its approved CLI tools, temporary devices and isolated process information, and minimal read-only DNS configuration. It has unrestricted network access. It does not expose the host home directory, the rest of the Nix store, global Git configuration, SSH keys, editor settings, or other working trees. Its environment is cleared before a small allowlist is restored.
-
-Bubblewrap relies on unprivileged user namespaces. If the host distribution disables them, `agent-shell` will fail rather than silently run without isolation.
-
-## GitHub security
-
-`gh` is installed but this repository does not create a remote or authenticate automatically. Normal interactive use can authenticate outside the agent sandbox with `gh auth login`.
-
-For agent GitHub access, create a fine-grained token restricted to this future repository and pass it only for the command that needs it:
-
-```bash
-GH_TOKEN=... agent-shell gh repo view
-```
-
-`GH_TOKEN` is the sole credential intentionally forwarded by `agent-shell`. A network-enabled process that can read a token can also transmit it, so no local sandbox can make a broad account token safe. Never give an agent a general account token or personal SSH key.
+The Socratic tutor calls the Google AI Studio API. Copy `.env.example` to `.env.local` and supply a key to enable it; without a key the rest of the app works unchanged.
 
 ## Data and content
 

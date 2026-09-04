@@ -13,7 +13,7 @@ import type { Lesson, Level, Locale } from "./types";
 
 const LANGUAGE_KEY = "maths-studio.language";
 const THEME_KEY = "maths-studio.theme";
-const VALID_LEVELS: Level[] = ["5e", "4e", "3e", "1re", "TAL-spe", "TAL-exp"];
+const VALID_LEVELS: Level[] = ["5e", "4e", "3e", "2de", "1re", "TAL-spe", "TAL-exp"];
 const VALID_LOCALES: Locale[] = ["en", "fr"];
 
 type Theme = "system" | "light" | "dark";

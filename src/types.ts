@@ -1,4 +1,4 @@
-export type Level = "5e" | "4e" | "3e" | "1re" | "TAL-spe" | "TAL-exp";
+export type Level = "5e" | "4e" | "3e" | "2de" | "1re" | "TAL-spe" | "TAL-exp";
 export type Locale = "en" | "fr";
 export type Difficulty = "revision" | "core" | "stretch" | "olympiad";
 

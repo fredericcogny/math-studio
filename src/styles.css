@@ -801,11 +801,20 @@ button {
 
   .profile-tabs {
     margin-left: auto;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .profile-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .profile-tabs button {
-    min-width: 48px;
-    padding: 7px 11px;
+    flex: 0 0 auto;
+    min-width: 44px;
+    padding: 7px 9px;
   }
 
   .topbar-actions {
