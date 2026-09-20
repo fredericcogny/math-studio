@@ -101,9 +101,11 @@ Cette simplification constitue une vérification dimensionnelle, et non une déc
 
 Comme $1\text{ km}=1000\text{ m}$ et $1\text{ h}=3600\text{ s}$,
 
-$$1\text{ m/s}=\frac{1\text{ m}}{1\text{ s}}
+$$
+1\text{ m/s}=\frac{1\text{ m}}{1\text{ s}}
 =\frac{0,001\text{ km}}{1/3600\text{ h}}
-=3,6\text{ km/h}.$$
+=3,6\text{ km/h}.
+$$
 
 Pour passer de m/s à km/h, on multiplie par $3,6$ ; dans l'autre sens, on divise par $3,6$. Ainsi, $72\text{ km/h}=20\text{ m/s}$.
 
@@ -113,22 +115,28 @@ La vitesse moyenne est le quotient de la distance totale par la durée totale. C
 
 Pour un débit constant,
 
-$$q=\frac Vt,\qquad V=qt,
-\qquad t=\frac Vq.$$
+$$
+q=\frac Vt,\qquad V=qt,
+\qquad t=\frac Vq.
+$$
 
 Les unités de volume et de débit doivent être compatibles. Par exemple, $2,5\text{ L/s}=150\text{ L/min}$, car une minute contient $60$ secondes.
 
 La masse volumique relie masse et volume :
 
-$$\rho=\frac mV,
+$$
+\rho=\frac mV,
 \qquad m=\rho V,
-\qquad V=\frac m\rho.$$
+\qquad V=\frac m\rho.
+$$
 
 Une masse volumique de $1\text{ g}/\text{cm}^3$ est égale à $1000\text{ kg}/\text{m}^3$ :
 
-$$1\frac{\text g}{\text{cm}^3}
+$$
+1\frac{\text g}{\text{cm}^3}
 =\frac{0,001\text{ kg}}{10^{-6}\text{ m}^3}
-=1000\frac{\text{kg}}{\text m^3}.$$
+=1000\frac{\text{kg}}{\text m^3}.
+$$
 
 Il faut convertir ensemble la masse et le volume ; modifier une seule partie d'une unité composée change sa valeur de manière incorrecte.
 
@@ -142,9 +150,11 @@ $$1\text{ m}^3=100^3\text{ cm}^3=1\,000\,000\text{ cm}^3.$$
 
 Les capacités et les volumes sont reliés par
 
-$$1\text{ L}=1\text{ dm}^3,
+$$
+1\text{ L}=1\text{ dm}^3,
 \qquad1\text{ mL}=1\text{ cm}^3,
-\qquad1\text{ m}^3=1000\text{ L}.$$
+\qquad1\text{ m}^3=1000\text{ L}.
+$$
 
 **Conversion résolue.**
 

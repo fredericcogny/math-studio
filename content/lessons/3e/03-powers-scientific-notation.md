@@ -149,8 +149,10 @@ $$a\times10^n\quad\text{with}\quad1\le |a|<10$$
 
 and integer $n$. For example,
 
-$$6,430,000=6.43\times10^6,
-\qquad0.000072=7.2\times10^{-5}.$$
+$$
+6,430,000=6.43\times10^6,
+\qquad0.000072=7.2\times10^{-5}.
+$$
 
 The signs of the number and the exponent play different roles: $-4.1\times10^{-3}$ is a negative number close to zero.
 

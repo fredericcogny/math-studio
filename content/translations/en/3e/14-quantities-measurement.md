@@ -100,9 +100,11 @@ This cancellation is a dimensional check, not an optional decoration.
 
 Because $1\text{ km}=1000\text{ m}$ and $1\text{ h}=3600\text{ s}$,
 
-$$1\text{ m/s}=\frac{1\text{ m}}{1\text{ s}}
+$$
+1\text{ m/s}=\frac{1\text{ m}}{1\text{ s}}
 =\frac{0.001\text{ km}}{1/3600\text{ h}}
-=3.6\text{ km/h}.$$
+=3.6\text{ km/h}.
+$$
 
 Multiply by $3.6$ from m/s to km/h and divide by $3.6$ in the reverse direction. Thus $72\text{ km/h}=20\text{ m/s}$.
 
@@ -112,22 +114,28 @@ Average speed is total distance divided by total time. It is generally not the a
 
 For a constant flow rate,
 
-$$q=\frac Vt,\qquad V=qt,
-\qquad t=\frac Vq.$$
+$$
+q=\frac Vt,\qquad V=qt,
+\qquad t=\frac Vq.
+$$
 
 The volume and flow-rate units must agree. For example, $2.5\text{ L/s}=150\text{ L/min}$ because one minute contains $60$ seconds.
 
 Density relates mass and volume:
 
-$$\rho=\frac mV,
+$$
+\rho=\frac mV,
 \qquad m=\rho V,
-\qquad V=\frac m\rho.$$
+\qquad V=\frac m\rho.
+$$
 
 A density of $1\text{ g}/\text{cm}^3$ equals $1000\text{ kg}/\text{m}^3$:
 
-$$1\frac{\text g}{\text{cm}^3}
+$$
+1\frac{\text g}{\text{cm}^3}
 =\frac{0.001\text{ kg}}{10^{-6}\text{ m}^3}
-=1000\frac{\text{kg}}{\text m^3}.$$
+=1000\frac{\text{kg}}{\text m^3}.
+$$
 
 Convert mass and volume together; changing only one part of a compound unit changes its value incorrectly.
 
@@ -141,9 +149,11 @@ $$1\text{ m}^3=100^3\text{ cm}^3=1\,000\,000\text{ cm}^3.$$
 
 Capacity and volume are connected by
 
-$$1\text{ L}=1\text{ dm}^3,
+$$
+1\text{ L}=1\text{ dm}^3,
 \qquad1\text{ mL}=1\text{ cm}^3,
-\qquad1\text{ m}^3=1000\text{ L}.$$
+\qquad1\text{ m}^3=1000\text{ L}.
+$$
 
 **Worked conversion.**
 
