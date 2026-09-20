@@ -109,9 +109,11 @@ tieredExercises:
 
 Fix an acute angle $\theta$ in a right triangle. Name the sides relative to that angle: the **hypotenuse** is opposite the right angle, the **opposite** side faces $\theta$, and the **adjacent** side touches $\theta$ but is not the hypotenuse.
 
-$$\sin\theta=\frac{\text{opposite}}{\text{hypotenuse}},\qquad
+$$
+\sin\theta=\frac{\text{opposite}}{\text{hypotenuse}},\qquad
 \cos\theta=\frac{\text{adjacent}}{\text{hypotenuse}},\qquad
-\tan\theta=\frac{\text{opposite}}{\text{adjacent}}.$$
+\tan\theta=\frac{\text{opposite}}{\text{adjacent}}.
+$$
 
 The labels opposite and adjacent change when the chosen angle changes. The hypotenuse does not.
 
@@ -135,8 +137,10 @@ $$\cos52^\circ=\frac7x\quad\Longrightarrow\quad x=\frac7{\cos52^\circ}\approx11.
 
 If instead the opposite and adjacent legs are $9$ cm and $12$ cm, then
 
-$$\tan\theta=\frac9{12}=0.75,
-\qquad \theta=\tan^{-1}(0.75)\approx36.9^\circ.$$
+$$
+\tan\theta=\frac9{12}=0.75,
+\qquad \theta=\tan^{-1}(0.75)\approx36.9^\circ.
+$$
 
 Keep full calculator precision until the final line.
 

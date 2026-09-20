@@ -110,16 +110,20 @@ Par exemple, $-\frac34<-\frac23$, car $-\frac34=-\frac9{12}$ et $-\frac23=-\frac
 
 On ne peut réunir que des quantités exprimées avec des parts de même taille. Pour $b,d\ne0$,
 
-$$\frac ab+\frac cd=\frac{ad+bc}{bd},\qquad
-\frac ab-\frac cd=\frac{ad-bc}{bd}.$$
+$$
+\frac ab+\frac cd=\frac{ad+bc}{bd},\qquad
+\frac ab-\frac cd=\frac{ad-bc}{bd}.
+$$
 
 L'utilisation du plus petit multiple commun donne souvent des nombres plus simples que le choix immédiat de $bd$.
 
 **Exemple résolu.**
 
-$$-\frac7{12}-\frac5{18}
+$$
+-\frac7{12}-\frac5{18}
 =-\frac{21}{36}-\frac{10}{36}
-=-\frac{31}{36}.$$
+=-\frac{31}{36}.
+$$
 
 Le numérateur $31$ n'a aucun facteur premier commun avec $36$ ; le résultat est donc irréductible. On n'additionne jamais les dénominateurs : $\frac12+\frac13$ n'est pas égal à $\frac25$.
 
@@ -135,20 +139,26 @@ $$\frac ab\times\frac cd=\frac{ac}{bd}.$$
 
 Il est préférable de simplifier les facteurs communs avant d'effectuer les produits :
 
-$$-\frac{14}{15}\times\frac{25}{21}
+$$
+-\frac{14}{15}\times\frac{25}{21}
 =-\frac{2\times5}{3\times3}
-=-\frac{10}{9}.$$
+=-\frac{10}{9}.
+$$
 
 Pour diviser, on multiplie par l'inverse du diviseur non nul :
 
-$$\frac ab\div\frac cd=\frac ab\times\frac dc
-\qquad(c\ne0).$$
+$$
+\frac ab\div\frac cd=\frac ab\times\frac dc
+\qquad(c\ne0).
+$$
 
 Par exemple,
 
-$$-\frac49\div\frac8{15}
+$$
+-\frac49\div\frac8{15}
 =-\frac49\times\frac{15}{8}
-=-\frac56.$$
+=-\frac56.
+$$
 
 La division par zéro n'est jamais définie. Inverser la première fraction ou inverser les deux fractions modifie le calcul et constitue une erreur.
 

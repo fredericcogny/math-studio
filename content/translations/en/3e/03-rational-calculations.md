@@ -110,16 +110,20 @@ For example, $-\frac34<-\frac23$ because $-\frac34=-\frac9{12}$ and $-\frac23=-\
 
 Only quantities expressed in equal-sized parts can be combined. For $b,d\ne0$,
 
-$$\frac ab+\frac cd=\frac{ad+bc}{bd},\qquad
-\frac ab-\frac cd=\frac{ad-bc}{bd}.$$
+$$
+\frac ab+\frac cd=\frac{ad+bc}{bd},\qquad
+\frac ab-\frac cd=\frac{ad-bc}{bd}.
+$$
 
 Using the least common multiple often keeps the numbers smaller than using $bd$ immediately.
 
 **Worked example.**
 
-$$-\frac7{12}-\frac5{18}
+$$
+-\frac7{12}-\frac5{18}
 =-\frac{21}{36}-\frac{10}{36}
-=-\frac{31}{36}.$$
+=-\frac{31}{36}.
+$$
 
 The numerator $31$ shares no prime factor with $36$, so the result is irreducible. Never add denominators: $\frac12+\frac13$ is not $\frac25$.
 
@@ -135,20 +139,26 @@ $$\frac ab\times\frac cd=\frac{ac}{bd}.$$
 
 Simplify common factors across the product before multiplying:
 
-$$-\frac{14}{15}\times\frac{25}{21}
+$$
+-\frac{14}{15}\times\frac{25}{21}
 =-\frac{2\times5}{3\times3}
-=-\frac{10}{9}.$$
+=-\frac{10}{9}.
+$$
 
 For division, multiply by the reciprocal of the nonzero divisor:
 
-$$\frac ab\div\frac cd=\frac ab\times\frac dc
-\qquad(c\ne0).$$
+$$
+\frac ab\div\frac cd=\frac ab\times\frac dc
+\qquad(c\ne0).
+$$
 
 For example,
 
-$$-\frac49\div\frac8{15}
+$$
+-\frac49\div\frac8{15}
 =-\frac49\times\frac{15}{8}
-=-\frac56.$$
+=-\frac56.
+$$
 
 Division by zero is never defined. Inverting the first fraction, or inverting both fractions, changes the calculation and is incorrect.
 

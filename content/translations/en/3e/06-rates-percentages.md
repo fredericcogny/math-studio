@@ -44,7 +44,7 @@ exercises:
       - "Obtains and checks the shares $120$ dollars and $300$ dollars."
   - id: 3e-rates-t2
     tierTitle: Brevet-Standard Problem
-    prompt: A jacket initially costs $\$85$. Its price is reduced by $20\%$, then the sale price is increased by $10\%$. Find the final price and the single percentage change from the initial price.
+    prompt: A jacket initially costs \$85. Its price is reduced by $20\%$, then the sale price is increased by $10\%$. Find the final price and the single percentage change from the initial price.
     solution: The successive multipliers are $0.80$ and $1.10$. The final price is $85\times0.80\times1.10=74.80$ dollars. The combined multiplier is $0.88=1-0.12$, so the overall change is a $12\%$ decrease.
     hints:
       - Apply each change to the price produced by the preceding change.

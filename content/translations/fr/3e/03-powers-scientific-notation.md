@@ -121,8 +121,10 @@ $$a\times10^n\quad\text{avec}\quad1\le |a|<10$$
 
 et $n$ entier relatif. Par exemple,
 
-$$6\,430\,000=6,43\times10^6,
-\qquad0,000072=7,2\times10^{-5}.$$
+$$
+6\,430\,000=6,43\times10^6,
+\qquad0,000072=7,2\times10^{-5}.
+$$
 
 Le signe du nombre et celui de l'exposant jouent des rôles différents : $-4,1\times10^{-3}$ est un nombre négatif proche de zéro.
 

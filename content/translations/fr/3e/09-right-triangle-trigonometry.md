@@ -74,9 +74,11 @@ exercises:
 
 Fixons un angle aigu $\theta$ dans un triangle rectangle. Les noms des côtés dépendent de cet angle : l'**hypoténuse** est opposée à l'angle droit, le côté **opposé** fait face à $\theta$ et le côté **adjacent** touche $\theta$ sans être l'hypoténuse.
 
-$$\sin\theta=\frac{\text{opposé}}{\text{hypoténuse}},\qquad
+$$
+\sin\theta=\frac{\text{opposé}}{\text{hypoténuse}},\qquad
 \cos\theta=\frac{\text{adjacent}}{\text{hypoténuse}},\qquad
-\tan\theta=\frac{\text{opposé}}{\text{adjacent}}.$$
+\tan\theta=\frac{\text{opposé}}{\text{adjacent}}.
+$$
 
 Les désignations « opposé » et « adjacent » changent quand l'angle de référence change. L'hypoténuse ne change jamais.
 
@@ -100,8 +102,10 @@ $$\cos52^\circ=\frac7x\quad\Longrightarrow\quad x=\frac7{\cos52^\circ}\approx11,
 
 Si les côtés opposé et adjacent mesurent respectivement $9$ cm et $12$ cm, alors
 
-$$\tan\theta=\frac9{12}=0,75,
-\qquad \theta=\tan^{-1}(0,75)\approx36,9^\circ.$$
+$$
+\tan\theta=\frac9{12}=0,75,
+\qquad \theta=\tan^{-1}(0,75)\approx36,9^\circ.
+$$
 
 Il faut conserver toute la précision de la calculatrice jusqu'à la dernière ligne.
 
