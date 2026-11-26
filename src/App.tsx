@@ -8,6 +8,7 @@ import {
   saveProgress,
   type ProgressState,
 } from "./progress";
+import { AdventCalendar } from "./AdventCalendar";
 import { Practice } from "./Practice";
 import type { Lesson, Level, Locale } from "./types";
 
@@ -104,14 +105,17 @@ function LessonList({
       <p className="eyebrow">{t.curriculum} · {availableLessons.length} {t.lessonCount}</p>
       {availableLessons.map((lesson, index) => {
         const state = progress.lessons[lesson.meta.level]?.[lesson.meta.id];
+        const isBonus = lesson.meta.difficulty === "bonus";
         return (
           <button
-            className={`lesson-link ${current === lesson.meta.id ? "active" : ""}`}
+            className={`lesson-link ${current === lesson.meta.id ? "active" : ""} ${isBonus ? "bonus" : ""}`}
             key={lesson.meta.id}
             onClick={() => onSelect(lesson)}
             aria-current={current === lesson.meta.id ? "page" : undefined}
           >
-            <span className="lesson-index">{String(index + 1).padStart(2, "0")}</span>
+            <span className={`lesson-index ${isBonus ? "bonus-star" : ""}`}>
+              {isBonus ? "★" : String(index + 1).padStart(2, "0")}
+            </span>
             <span>
               <strong>{lesson.meta.title}</strong>
               <small>{t.difficulty[lesson.meta.difficulty]}</small>
@@ -225,7 +229,9 @@ export function App() {
   if (!selectedLesson) return <main>{t.noLessons}</main>;
 
   const profileInfo = profiles.find((item) => item.level === profile)!;
-  const masteryLessons = availableLessons.filter((lesson) => lesson.meta.difficulty !== "olympiad");
+  const masteryLessons = availableLessons.filter(
+    (lesson) => lesson.meta.difficulty !== "olympiad" && lesson.meta.difficulty !== "bonus",
+  );
   const completed = masteryLessons.filter(
     (lesson) => progress.lessons[profile]?.[lesson.meta.id]?.completed,
   ).length;
@@ -353,15 +359,24 @@ export function App() {
         </article>
 
         <Flashcards key={`cards-${selectedLesson.meta.id}`} cards={selectedLesson.meta.flashcards} locale={locale} />
-        <Practice
-          key={`practice-${selectedLesson.meta.id}-${locale}`}
-          lesson={selectedLesson}
-          onResult={storeResult}
-          onDirty={() => setResult(null)}
-          locale={locale}
-        />
+        {selectedLesson.meta.adventDays ? (
+          <AdventCalendar
+            key={`advent-${selectedLesson.meta.id}-${locale}`}
+            lesson={selectedLesson}
+            onResult={storeResult}
+            locale={locale}
+          />
+        ) : (
+          <Practice
+            key={`practice-${selectedLesson.meta.id}-${locale}`}
+            lesson={selectedLesson}
+            onResult={storeResult}
+            onDirty={() => setResult(null)}
+            locale={locale}
+          />
+        )}
 
-        {result !== null && (
+        {!selectedLesson.meta.adventDays && result !== null && (
           <div className={`result-banner ${result >= 80 ? "mastered" : "keep-going"}`} role="status">
             <strong>{result}%</strong>
             <span>{result >= 80 ? t.coreComplete : t.coreContinue}</span>

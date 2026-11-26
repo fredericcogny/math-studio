@@ -17,6 +17,7 @@ const expectedLessonIds: Record<Level, string[]> = {
     "5e-measurement-solids",
     "5e-data-probability",
     "5e-algorithmic-thinking",
+    "5e-advent-calendar",
   ],
   "4e": [
     "4e-fraction-operations",
@@ -49,6 +50,7 @@ const expectedLessonIds: Record<Level, string[]> = {
     "3e-quantities-measurement",
     "3e-programming-algorithms",
     "3e-modular-patterns",
+    "3e-advent-calendar",
   ],
   "2de": [
     "2de-number-sets-intervals",
@@ -72,6 +74,7 @@ const expectedLessonIds: Record<Level, string[]> = {
     "1re-trigonometric-circle",
     "1re-dot-product",
     "1re-conditional-probability",
+    "1re-advent-calendar",
   ],
   "TAL-spe": [
     "tal-recurrence",
@@ -105,17 +108,28 @@ describe("lesson content", () => {
     }
 
     for (const lesson of lessons) {
-      const exercises = lesson.meta.tieredExercises ?? [];
-      expect(exercises, lesson.meta.id).toHaveLength(4);
-      expect(exercises.map((exercise) => exercise.tier), lesson.meta.id).toEqual([1, 2, 3, 4]);
-      expect(exercises[3].assessment.kind, `${lesson.meta.id} Tier 4`).toBe("reasoning");
-      expect(["olympiad", "cpge"], `${lesson.meta.id} Tier 4`).toContain(exercises[3].curriculumStatus);
+      if (lesson.meta.adventDays) {
+        expect(lesson.meta.difficulty, lesson.meta.id).toBe("bonus");
+        expect(lesson.meta.adventDays, lesson.meta.id).toHaveLength(24);
+        expect(lesson.meta.adventDays.map((d) => d.day), lesson.meta.id).toEqual(
+          Array.from({ length: 24 }, (_, idx) => idx + 1),
+        );
+        expect(lesson.meta.adventDays.filter((d) => d.format === "algorithm"), lesson.meta.id).toHaveLength(4);
+        expect(lesson.meta.adventDays.filter((d) => d.format === "proof"), lesson.meta.id).toHaveLength(4);
+        expect(lesson.meta.adventDays.filter((d) => d.assessment.kind === "reasoning"), lesson.meta.id).toHaveLength(4);
+      } else {
+        const exercises = lesson.meta.tieredExercises ?? [];
+        expect(exercises, lesson.meta.id).toHaveLength(4);
+        expect(exercises.map((exercise) => exercise.tier), lesson.meta.id).toEqual([1, 2, 3, 4]);
+        expect(exercises[3].assessment.kind, `${lesson.meta.id} Tier 4`).toBe("reasoning");
+        expect(["olympiad", "cpge"], `${lesson.meta.id} Tier 4`).toContain(exercises[3].curriculumStatus);
+      }
     }
   });
 
   it("provides complete English and French versions of every lesson", () => {
-    expect(lessonsByLocale.en).toHaveLength(68);
-    expect(lessonsByLocale.fr).toHaveLength(68);
+    expect(lessonsByLocale.en).toHaveLength(71);
+    expect(lessonsByLocale.fr).toHaveLength(71);
     expect(lessonsByLocale.en.map((lesson) => lesson.meta.id)).toEqual(
       lessonsByLocale.fr.map((lesson) => lesson.meta.id),
     );
@@ -125,15 +139,32 @@ describe("lesson content", () => {
         expect(lesson.body.length, `${locale}:${lesson.meta.id} body`).toBeGreaterThan(100);
         expect(lesson.meta.title, `${locale}:${lesson.meta.id} title`).not.toBe("");
         expect(lesson.meta.flashcards.length, `${locale}:${lesson.meta.id} flashcards`).toBeGreaterThan(0);
-        expect(lesson.meta.tieredExercises, `${locale}:${lesson.meta.id} exercises`).toHaveLength(4);
-        expect(lesson.meta.tieredExercises?.every((exercise) =>
-          exercise.prompt.length > 0 && exercise.solution.length > 0 && exercise.hints.length > 0
-        )).toBe(true);
-        for (const exercise of lesson.meta.tieredExercises ?? []) {
-          if (exercise.assessment.kind === "exact") {
-            expect(checkAssessment(exercise.assessment, exercise.assessment.expected), `${locale}:${exercise.id} expected`).toBe(true);
-            for (const accepted of exercise.assessment.accepted ?? []) {
-              expect(checkAssessment(exercise.assessment, accepted), `${locale}:${exercise.id} accepted ${accepted}`).toBe(true);
+
+        if (lesson.meta.adventDays) {
+          expect(lesson.meta.adventDays, `${locale}:${lesson.meta.id} adventDays`).toHaveLength(24);
+          expect(lesson.meta.adventDays.every((day) =>
+            day.title.length > 0 && day.story.length > 0 && day.prompt.length > 0
+            && day.solution.length > 0 && day.hints.length > 0
+          )).toBe(true);
+          for (const day of lesson.meta.adventDays) {
+            if (day.assessment.kind === "exact") {
+              expect(checkAssessment(day.assessment, day.assessment.expected), `${locale}:${day.id} expected`).toBe(true);
+              for (const accepted of day.assessment.accepted ?? []) {
+                expect(checkAssessment(day.assessment, accepted), `${locale}:${day.id} accepted ${accepted}`).toBe(true);
+              }
+            }
+          }
+        } else {
+          expect(lesson.meta.tieredExercises, `${locale}:${lesson.meta.id} exercises`).toHaveLength(4);
+          expect(lesson.meta.tieredExercises?.every((exercise) =>
+            exercise.prompt.length > 0 && exercise.solution.length > 0 && exercise.hints.length > 0
+          )).toBe(true);
+          for (const exercise of lesson.meta.tieredExercises ?? []) {
+            if (exercise.assessment.kind === "exact") {
+              expect(checkAssessment(exercise.assessment, exercise.assessment.expected), `${locale}:${exercise.id} expected`).toBe(true);
+              for (const accepted of exercise.assessment.accepted ?? []) {
+                expect(checkAssessment(exercise.assessment, accepted), `${locale}:${exercise.id} accepted ${accepted}`).toBe(true);
+              }
             }
           }
         }

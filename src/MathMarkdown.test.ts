@@ -42,6 +42,17 @@ describe("MathMarkdown", () => {
             ...exercise.hints.map((hint, index): [string, string, boolean] =>
               [`${locale}:${exercise.id} hint ${index}`, hint, true]),
           ]),
+          ...(lesson.meta.adventDays ?? []).flatMap((day): Array<[string, string, boolean]> => [
+            [`${locale}:${day.id} story`, day.story, false],
+            [`${locale}:${day.id} prompt`, day.prompt, false],
+            [`${locale}:${day.id} solution`, day.solution, false],
+            ...day.hints.map((hint, index): [string, string, boolean] =>
+              [`${locale}:${day.id} hint ${index}`, hint, true]),
+            ...(day.assessment.kind === "reasoning"
+              ? day.assessment.rubric.map((criterion, index): [string, string, boolean] =>
+                [`${locale}:${day.id} rubric ${index}`, criterion, true])
+              : []),
+          ]),
         ];
 
         for (const [label, content, inline] of fragments) {
@@ -52,5 +63,5 @@ describe("MathMarkdown", () => {
     }
 
     expect(failures).toEqual([]);
-  }, 30_000);
+  }, 45_000);
 });
