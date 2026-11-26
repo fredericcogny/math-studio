@@ -14,6 +14,7 @@ const curricula = {
     "Measurement and Representations of Solids",
     "Data Displays, Mean, and Probability",
     "Block Algorithms, Formulas, and Loops",
+    "Advent of Math: The Clockwork Toymaker's Workshop",
   ],
   "4e": [
     "Fraction Operations: All Four",
@@ -46,6 +47,7 @@ const curricula = {
     "Quantities, Compound Units, and Volumes",
     "Programming and Algorithmic Reasoning",
     "Clock Arithmetic and Invariants",
+    "Advent of Math: The Polar Express Mystery",
   ],
   "2de": [
     "Number Sets, Intervals, and Absolute Value",
@@ -69,6 +71,7 @@ const curricula = {
     "The Unit Circle and Sine/Cosine Functions",
     "The Dot Product in the Plane",
     "Conditional Probability and Independence",
+    "Advent of Math: Operation Starlight",
   ],
   "TAL-spe": [
     "Proof by Induction",
@@ -257,6 +260,28 @@ test.describe("desktop practice layout", () => {
     for (let index = 0; index < await criteria.count(); index += 1) await criteria.nth(index).check();
     await practice.getByRole("button", { name: "Check Visible Exercises" }).click();
     await expect(challenge.getByText("Self-assessed rubric complete")).toBeVisible();
+  });
+
+  test("unlocks and solves doors in the Advent of Math bonus lesson", async ({ page }) => {
+    await page.goto("/?level=5e&lesson=5e-advent-calendar&lang=en");
+    const advent = page.locator(".advent-block");
+    await expect(advent.locator(".advent-door")).toHaveCount(24);
+
+    const unlockButton = advent.getByRole("button", { name: "Unlock all 24 doors" });
+    if (await unlockButton.isVisible()) {
+      await unlockButton.click();
+    }
+
+    await advent.locator(".advent-door").first().click();
+    await expect(advent.locator(".advent-day-panel h3")).toHaveText("The Frozen Thermometer Vault");
+    await advent.getByPlaceholder("Your numeric answer").fill("5");
+    await advent.getByRole("button", { name: "Check Answer" }).click();
+    await expect(advent.locator(".advent-progress-pill")).toHaveText("1 / 24 doors solved");
+    await expect(advent.locator(".advent-door").first()).toHaveClass(/solved/);
+
+    await page.getByRole("group", { name: "Language" }).getByRole("button", { name: "FR" }).click();
+    await expect(page.getByRole("heading", { level: 1, name: /Calendrier de l'Avent/ })).toBeVisible();
+    await expect(advent.locator(".advent-progress-pill")).toHaveText("1 / 24 cases résolues");
   });
 });
 

@@ -93,3 +93,8 @@ content/translations/fr/<level>/<lesson-file>.md
 ```
 
 Sidecars contain localized lesson metadata, vocabulary definitions keyed by the canonical English term, flashcards, every exercise prompt/solution/hint/rubric, optional localized exact-answer alternatives, and the complete Markdown body. English sidecars use American English spelling; French sidecars use standard French mathematical notation, including decimal commas. In a French list containing decimal numbers, separate items with semicolons so the item delimiter cannot be mistaken for a decimal comma. The content loader rejects missing, duplicate, incomplete, or structurally mismatched translations.
+
+## Advent of Math bonus lessons
+
+Seasonal bonus lessons use `difficulty: bonus` and replace `tieredExercises` with an `adventDays` array containing exactly 24 entries numbered `day: 1` through `day: 24`. Each day specifies `id`, `title`, `topic`, `format` (`riddle`, `algorithm`, `proof`, or `puzzle`), `difficulty` (`medium`, `hard`, or `challenge`), `story`, `prompt`, `solution`, `hints`, and an `assessment` (`numeric`, `exact`, or `reasoning`). Both `en` and `fr` translation sidecars must mirror all 24 days. Bonus lessons do not count toward core curriculum mastery.
+

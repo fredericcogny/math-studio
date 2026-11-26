@@ -1,9 +1,11 @@
 export type Level = "5e" | "4e" | "3e" | "2de" | "1re" | "TAL-spe" | "TAL-exp";
 export type Locale = "en" | "fr";
-export type Difficulty = "revision" | "core" | "stretch" | "olympiad";
+export type Difficulty = "revision" | "core" | "stretch" | "olympiad" | "bonus";
 
 export type ExerciseTierLevel = 1 | 2 | 3 | 4;
 export type CurriculumStatus = "core" | "stretch" | "olympiad" | "cpge";
+export type AdventFormat = "riddle" | "algorithm" | "proof" | "puzzle";
+export type AdventDifficulty = "medium" | "hard" | "challenge";
 
 export type ExerciseAssessment =
   | {
@@ -26,6 +28,20 @@ export interface TieredExercise {
   tier: ExerciseTierLevel;
   tierTitle: string;
   curriculumStatus: CurriculumStatus;
+  prompt: string;
+  solution: string;
+  hints: string[];
+  assessment: ExerciseAssessment;
+}
+
+export interface AdventDay {
+  day: number;
+  id: string;
+  title: string;
+  topic: string;
+  format: AdventFormat;
+  difficulty: AdventDifficulty;
+  story: string;
   prompt: string;
   solution: string;
   hints: string[];
@@ -96,6 +112,7 @@ export interface LessonMeta {
   flashcards: Flashcard[];
   generator: GeneratorSpec;
   tieredExercises?: TieredExercise[];
+  adventDays?: AdventDay[];
 }
 
 export interface Lesson {
